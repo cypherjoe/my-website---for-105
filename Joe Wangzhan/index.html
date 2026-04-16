@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zhiqiu (Joe) ZHANG</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">Joe ZHANG</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                
+                <div class="dropdown">
+                    <button class="dropbtn" onclick="toggleDropdown(event, 'exp-dropdown')">Experiences <i class="fas fa-chevron-down"></i></button>
+                    <div id="exp-dropdown" class="dropdown-content">
+                        <a href="pages/experiences/law-firms.html">Law Firms</a>
+                        <a href="pages/experiences/legal-clinic.html">Legal Clinic</a>
+                        <a href="pages/experiences/lawasia-moot.html">LAWASIA Moot</a>
+                        <a href="pages/experiences/translator.html">Translator</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="dropbtn" onclick="toggleDropdown(event, 'act-dropdown')">Activities <i class="fas fa-chevron-down"></i></button>
+                    <div id="act-dropdown" class="dropdown-content">
+                        <a href="pages/activities/public-speaking-team.html">Public Speaking Team</a>
+                        <a href="pages/activities/student-coach.html">Student Coach</a>
+                        <a href="pages/activities/law-society.html">Law Society</a>
+                        <a href="pages/activities/unc-exchange.html">UNC Exchange</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="dropbtn" onclick="toggleDropdown(event, 'proj-dropdown')">Projects <i class="fas fa-chevron-down"></i></button>
+                    <div id="proj-dropdown" class="dropdown-content">
+                        <a href="pages/projects/global-sustainability-challenge.html">Global Sustainability Challenge</a>
+                        <a href="pages/projects/short-stories.html">Short Stories</a>
+                        <a href="pages/projects/publications.html">Publications</a>
+                        <a href="pages/projects/videos.html">Videos</a>
+                    </div>
+                </div>
+
+                <button class="theme-toggle" title="Toggle Dark Mode">🌙</button>
+            </div>
+            <button class="mobile-menu-btn">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container hero-container">
+            <div class="hero-content fade-in">
+                <h1 class="typing-text">About</h1>
+                <p>
+                    Zhiqiu (Joe) Zhang is pursuing a BA in Legal Communication at The Chinese University of Hong Kong, Shenzhen. Before formal legal training, he independently handled an insurance contract dispute on behalf of a close family member against Dentons LLP. He managed client interviews, evidence collection, pleadings, court appearances, and negotiations. The case concluded with full recovery of RMB 829,346.84. Joe aims to apply to law school in a common law jurisdiction, and act as a bridge between China and the world. 
+                </p>
+                <div class="btn-group">
+                    <a href="mailto:zhiqiuzhang@link.cuhk.edu.cn" class="cta-button">Get In Touch</a>
+                    <a href="assets/resume.pdf" class="cta-button secondary" target="_blank" download>
+                        <i class="fas fa-download"></i> Download Resume
+                    </a>
+                </div>
+            </div>
+            <div class="headshot-container fade-in">
+                <img src="assets/headshot.jpg" alt="Zhiqiu (Joe) ZHANG" class="headshot">
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title fade-in">Get In Touch</h2>
+            <div style="text-align: center; margin-bottom: 2rem;" class="fade-in">
+                <p style="font-size: 1.2rem;">Email: <a href="mailto:zhiqiuzhang@link.cuhk.edu.cn" style="color: var(--primary-color);">zhiqiuzhang@link.cuhk.edu.cn</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/joe-zhang-sh/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="mailto:zhiqiuzhang@link.cuhk.edu.cn"><i class="fas fa-envelope"></i></a>
+            </div>
+            <div class="footer-contact">
+                <p>China: <a href="tel:+8618601622722">+86 18601622722</a> | US: <a href="tel:+19842913115">+1 9842913115</a></p>
+                <p>UNC Email: <a href="mailto:joezhang@unc.edu">joezhang@unc.edu</a> | CUHKSZ Email: <a href="mailto:zhiqiuzhang@link.cuhk.edu.cn">zhiqiuzhang@link.cuhk.edu.cn</a></p>
+            </div>
+            <p>&copy; <span class="current-year"></span> Zhiqiu (Joe) ZHANG. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <div class="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
