@@ -108,14 +108,14 @@
             'alt.pub1': 'Publication'
         },
         zh: {
-            'nav.logo': '张知秋 ZHANG',
+            'nav.logo': '张知秋',
             'nav.home': '首页',
             'nav.experiences': '经历',
             'nav.activities': '活动',
             'nav.projects': '项目',
             'nav.exp.lawFirms': '律师事务所',
             'nav.exp.legalClinic': '法律诊所',
-            'nav.exp.lawasia': 'LAWASIA Moot',
+            'nav.exp.lawasia': 'LAWASIA国际模拟法庭',
             'nav.exp.translator': '翻译',
             'nav.act.publicSpeaking': '演讲队',
             'nav.act.studentCoach': '学长计划导师',
@@ -129,7 +129,7 @@
             'footer.usLabel': '美国：',
             'footer.uncEmailLabel': 'UNC 邮箱：',
             'footer.cuhkEmailLabel': '港中深邮箱：',
-            'footer.copyright': '张知秋 ZHANG。保留所有权利。',
+            'footer.copyright': '张知秋。保留所有权利。',
             'common.backHome': '返回首页',
             'common.getInTouch': '联系我',
             'common.downloadResume': '下载简历',
@@ -138,23 +138,23 @@
             'theme.titleDark': '切换浅色模式',
             'lang.ariaToZh': '切换到中文',
             'lang.ariaToEn': 'Switch to English',
-            'meta.index': '张知秋 ZHANG',
-            'meta.lawFirms': '律师事务所 | 张知秋 ZHANG',
-            'meta.legalClinic': '法律诊所 | 张知秋 ZHANG',
-            'meta.lawasia': 'LAWASIA Moot | 张知秋 ZHANG',
-            'meta.translator': '翻译 | 张知秋 ZHANG',
-            'meta.publicSpeaking': '演讲队 | 张知秋 ZHANG',
-            'meta.studentCoach': '学长计划导师 | 张知秋 ZHANG',
-            'meta.lawSociety': '法律学会 | 张知秋 ZHANG',
-            'meta.uncExchange': 'UNC 交换 | 张知秋 ZHANG',
-            'meta.gsc': '全球可持续发展挑战赛 | 张知秋 ZHANG',
-            'meta.shortStories': '短篇小说 | 张知秋 ZHANG',
-            'meta.publications': '发表 | 张知秋 ZHANG',
-            'meta.videos': '视频 | 张知秋 ZHANG',
+            'meta.index': '张知秋',
+            'meta.lawFirms': '律师事务所 | 张知秋',
+            'meta.legalClinic': '法律诊所 | 张知秋',
+            'meta.lawasia': 'LAWASIA国际模拟法庭 | 张知秋',
+            'meta.translator': '翻译 | 张知秋',
+            'meta.publicSpeaking': '演讲队 | 张知秋',
+            'meta.studentCoach': '学长计划导师 | 张知秋',
+            'meta.lawSociety': '法律学会 | 张知秋',
+            'meta.uncExchange': 'UNC 交换 | 张知秋',
+            'meta.gsc': '全球可持续发展挑战赛 | 张知秋',
+            'meta.shortStories': '短篇小说 | 张知秋',
+            'meta.publications': '发表 | 张知秋',
+            'meta.videos': '视频 | 张知秋',
             'index.heroHeading': '关于',
-            'index.heroBody': '张知秋就读于香港中文大学（深圳）Legal Communication 学士学位项目。在正式接受法律训练之前，他曾独立代理一位近亲属与 Dentons LLP 的保险合同纠纷，负责客户访谈、证据收集、诉状、出庭与谈判。案件最终以全额收回人民币 829,346.84 元结案。张知秋希望申请普通法法域的法学院，并在中国与世界之间担任桥梁。',
+            'index.heroBody': '张知秋就读于香港中文大学（深圳）英语法律学士学位项目。在正式接受法律训练之前，他曾独立代理一位近亲属与大成律师事务所的保险合同纠纷，负责客户访谈、证据收集、诉状、出庭与谈判。案件最终以全额收回人民币 829,346.84 元结案。张知秋希望申请普通法法域的法学院，并在中国与世界之间担任桥梁。',
             'index.contactHeading': '联系我',
-            'index.headshotAlt': '张知秋 ZHANG',
+            'index.headshotAlt': '张知秋',
             'lawFirms.body': '作为法律实习生，我在跨境诉讼与全球交易两方面都打下了扎实基础。在 JS Law，我负责电商诉讼防御，协调超过 60 名客户的尽职调查，帮助在广州与深圳合计取得超过人民币 300 万元的和解，同时依据美国法院动态每日推送 Temporary Restraining Order（TRO）预警以管控跨境风险。随后我转入 Freshfields LLP 全球交易部 Equity Capital Market 团队，参与七项大型 IPO 项目：开展逾 30 场现场第三方尽职调查访谈，翻译逾 20 份复杂监管文件，并以英文撰写逾 10 章美国侧招股书内容，展现了在复杂多法域环境中工作的能力。',
             'lawFirms.ipoHeading': '参与撰稿的港股 IPO：',
             'legalClinic.body': '独立撰写 5 份以上法律备忘录，主题涵盖行政申诉（工伤）、跨境 AI 初创（IP 注册）、合同纠纷（租赁、借贷）以及侵权（宠物伤害）。负责诊所的市场、后勤与行政事务；制作每周咨询报名表；协调律师档期；在校内学生、法律学会、创业俱乐部与诊所之间联络对接。',
@@ -179,13 +179,13 @@
             'alt.lf5': '律师事务所 5',
             'alt.lc1': '法律诊所',
             'alt.lc2': '法律诊所',
-            'alt.la1': 'LAWASIA 1',
-            'alt.la2': 'LAWASIA 2',
-            'alt.la3': 'LAWASIA 3',
-            'alt.la4': 'LAWASIA 4',
-            'alt.la5': 'LAWASIA 5',
-            'alt.la6': 'LAWASIA 6',
-            'alt.la7': 'LAWASIA 7',
+            'alt.la1': 'LAWASIA国际模拟法庭 1',
+            'alt.la2': 'LAWASIA国际模拟法庭 2',
+            'alt.la3': 'LAWASIA国际模拟法庭 3',
+            'alt.la4': 'LAWASIA国际模拟法庭 4',
+            'alt.la5': 'LAWASIA国际模拟法庭 5',
+            'alt.la6': 'LAWASIA国际模拟法庭 6',
+            'alt.la7': 'LAWASIA国际模拟法庭 7',
             'alt.tr1': '翻译 1',
             'alt.tr2': '翻译 2',
             'alt.tr3': '翻译 3',
@@ -226,6 +226,7 @@
 
     function applyLanguage(lang, silent) {
         if (lang !== 'en' && lang !== 'zh') lang = 'en';
+        var prevLang = document.documentElement.getAttribute('data-lang');
         document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : 'en';
         document.documentElement.setAttribute('data-lang', lang);
         localStorage.setItem(STORAGE_KEY, lang);
@@ -254,16 +255,26 @@
             el.textContent = text;
         });
 
-        var btn = document.querySelector('.lang-toggle');
-        if (btn) {
-            btn.textContent = lang === 'en' ? '中文' : 'English';
-            btn.setAttribute('aria-label', lang === 'en' ? tr(lang, 'lang.ariaToZh') : tr(lang, 'lang.ariaToEn'));
-        }
+        updateLangSwitchUI(lang);
 
         refreshThemeToggleTitle();
-        if (!silent) {
+        if (!silent && prevLang !== lang) {
             window.dispatchEvent(new CustomEvent('sitewideLangChange', { detail: { lang: lang } }));
         }
+    }
+
+    function updateLangSwitchUI(lang) {
+        document.querySelectorAll('.lang-switch-btn').forEach(function (btn) {
+            var L = btn.getAttribute('data-lang');
+            var active = L === lang;
+            btn.classList.toggle('active', active);
+            btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+            if (active) {
+                btn.setAttribute('aria-current', 'true');
+            } else {
+                btn.removeAttribute('aria-current');
+            }
+        });
     }
 
     function refreshThemeToggleTitle() {
@@ -282,12 +293,13 @@
     document.addEventListener('DOMContentLoaded', function () {
         applyLanguage(getLang(), true);
 
-        var langBtn = document.querySelector('.lang-toggle');
-        if (langBtn) {
-            langBtn.addEventListener('click', function () {
-                var next = getLang() === 'en' ? 'zh' : 'en';
-                applyLanguage(next, false);
+        document.querySelectorAll('.lang-switch-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var lang = btn.getAttribute('data-lang');
+                if (lang === 'en' || lang === 'zh') {
+                    applyLanguage(lang, false);
+                }
             });
-        }
+        });
     });
 })();

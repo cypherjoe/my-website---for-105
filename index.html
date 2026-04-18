@@ -45,10 +45,15 @@
                     </div>
                 </div>
 
-                <button class="theme-toggle" title="Toggle Dark Mode">🌙</button>
-                <button type="button" class="lang-toggle" aria-label="Switch to Chinese">中文</button>
             </div>
-            <button class="mobile-menu-btn">☰</button>
+            <div class="nav-toolbar">
+                <div class="lang-switch" role="tablist" aria-label="Language">
+                    <button type="button" class="lang-switch-btn active" data-lang="en" aria-pressed="true" title="English">EN</button>
+                    <button type="button" class="lang-switch-btn" data-lang="zh" aria-pressed="false" title="中文">中文</button>
+                </div>
+                <button type="button" class="theme-toggle" title="Toggle Dark Mode">🌙</button>
+                <button type="button" class="mobile-menu-btn" aria-label="Menu">☰</button>
+            </div>
         </div>
     </nav>
 
