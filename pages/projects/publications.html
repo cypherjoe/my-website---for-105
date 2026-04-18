@@ -3,48 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Publications | Zhiqiu (Joe) ZHANG</title>
+    <title data-i18n="meta.publications">Publications | Zhiqiu (Joe) ZHANG</title>
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <nav class="navbar">
         <div class="container nav-content">
-            <a href="../../index.html" class="logo">Joe ZHANG</a>
+            <a href="../../index.html" class="logo" data-i18n="nav.logo">Joe ZHANG</a>
             <div class="nav-links">
-                <a href="../../index.html">Home</a>
+                <a href="../../index.html" data-i18n="nav.home">Home</a>
 
                 <div class="dropdown">
-                    <button class="dropbtn" onclick="toggleDropdown(event, 'exp-dropdown')">Experiences <i class="fas fa-chevron-down"></i></button>
+                    <button class="dropbtn" onclick="toggleDropdown(event, 'exp-dropdown')"><span data-i18n="nav.experiences">Experiences</span> <i class="fas fa-chevron-down"></i></button>
                     <div id="exp-dropdown" class="dropdown-content">
-                        <a href="../experiences/law-firms.html">Law Firms</a>
-                        <a href="../experiences/legal-clinic.html">Legal Clinic</a>
-                        <a href="../experiences/lawasia-moot.html">LAWASIA Moot</a>
-                        <a href="../experiences/translator.html">Translator</a>
+                        <a href="../experiences/law-firms.html" data-i18n="nav.exp.lawFirms">Law Firms</a>
+                        <a href="../experiences/legal-clinic.html" data-i18n="nav.exp.legalClinic">Legal Clinic</a>
+                        <a href="../experiences/lawasia-moot.html" data-i18n="nav.exp.lawasia">LAWASIA Moot</a>
+                        <a href="../experiences/translator.html" data-i18n="nav.exp.translator">Translator</a>
                     </div>
                 </div>
 
                 <div class="dropdown">
-                    <button class="dropbtn" onclick="toggleDropdown(event, 'act-dropdown')">Activities <i class="fas fa-chevron-down"></i></button>
+                    <button class="dropbtn" onclick="toggleDropdown(event, 'act-dropdown')"><span data-i18n="nav.activities">Activities</span> <i class="fas fa-chevron-down"></i></button>
                     <div id="act-dropdown" class="dropdown-content">
-                        <a href="../activities/public-speaking-team.html">Public Speaking Team</a>
-                        <a href="../activities/student-coach.html">Student Coach</a>
-                        <a href="../activities/law-society.html">Law Society</a>
-                        <a href="../activities/unc-exchange.html">UNC Exchange</a>
+                        <a href="../activities/public-speaking-team.html" data-i18n="nav.act.publicSpeaking">Public Speaking Team</a>
+                        <a href="../activities/student-coach.html" data-i18n="nav.act.studentCoach">Student Coach</a>
+                        <a href="../activities/law-society.html" data-i18n="nav.act.lawSociety">Law Society</a>
+                        <a href="../activities/unc-exchange.html" data-i18n="nav.act.uncExchange">UNC Exchange</a>
                     </div>
                 </div>
 
                 <div class="dropdown">
-                    <button class="dropbtn" onclick="toggleDropdown(event, 'proj-dropdown')">Projects <i class="fas fa-chevron-down"></i></button>
+                    <button class="dropbtn" onclick="toggleDropdown(event, 'proj-dropdown')"><span data-i18n="nav.projects">Projects</span> <i class="fas fa-chevron-down"></i></button>
                     <div id="proj-dropdown" class="dropdown-content">
-                        <a href="../projects/global-sustainability-challenge.html">Global Sustainability Challenge</a>
-                        <a href="../projects/short-stories.html">Short Stories</a>
-                        <a href="../projects/publications.html">Publications</a>
-                        <a href="../projects/videos.html">Videos</a>
+                        <a href="../projects/global-sustainability-challenge.html" data-i18n="nav.proj.gsc">Global Sustainability Challenge</a>
+                        <a href="../projects/short-stories.html" data-i18n="nav.proj.shortStories">Short Stories</a>
+                        <a href="../projects/publications.html" data-i18n="nav.proj.publications">Publications</a>
+                        <a href="../projects/videos.html" data-i18n="nav.proj.videos">Videos</a>
                     </div>
                 </div>
 
                 <button class="theme-toggle" title="Toggle Dark Mode">🌙</button>
+                <button type="button" class="lang-toggle" aria-label="Switch to Chinese">中文</button>
             </div>
             <button class="mobile-menu-btn">☰</button>
         </div>
@@ -52,20 +53,20 @@
 
     <section class="section" style="padding-top: 120px; min-height: 80vh;">
         <div class="container">
-            <h1 class="section-title">Publications</h1>
+            <h1 class="section-title" data-i18n="nav.proj.publications">Publications</h1>
             <div class="carousel-container">
-                <img src="../../assets/gallery/Publications/ALSS.png" class="carousel-slide active" alt="Publication" decoding="async">
+                <img src="../../assets/gallery/Publications/ALSS.png" class="carousel-slide active" alt="Publication" decoding="async" data-i18n="alt.pub1">
             </div>
 
             <div class="text-placeholder prose">
-                <p>
+                <p data-i18n="publications.body">
                    As a junior law student, my research explores the evolving intersections of constitutional rights, technological governance, and international regulation. My writing aims to bridge traditional legal doctrines with complex contemporary challenges—ranging from the nuances of symbolic speech to the legal frameworks governing semiconductor export controls and AI. Recently, my paper 'Freedom of Speech and National Pride: Flag Desecration in the United States' was published in the Journal of Education, Humanities and Social Sciences. By analyzing landmark Supreme Court rulings, the article examines the constitutional tension between preserving national symbolism and protecting First Amendment rights. Whether drafting comprehensive legal memos for international arbitration or analyzing federal search powers, my ongoing scholarship is driven by a commitment to rigorous, objective analysis of the law.
                 </p>
             </div>
 
             <br><br>
             <div style="text-align: center;">
-                <a href="../../index.html" class="cta-button secondary">Back to Home</a>
+                <a href="../../index.html" class="cta-button secondary" data-i18n="common.backHome">Back to Home</a>
             </div>
         </div>
     </section>
@@ -77,12 +78,19 @@
                 <a href="mailto:zhiqiuzhang@link.cuhk.edu.cn"><i class="fas fa-envelope"></i></a>
             </div>
             <div class="footer-contact">
-                <p>China: <a href="tel:+8618601622722">+86 18601622722</a> | US: <a href="tel:+19842913115">+1 9842913115</a></p>
-                <p>UNC Email: <a href="mailto:joezhang@unc.edu">joezhang@unc.edu</a> | CUHKSZ Email: <a href="mailto:zhiqiuzhang@link.cuhk.edu.cn">zhiqiuzhang@link.cuhk.edu.cn</a></p>
+                <p>
+                    <span data-i18n="footer.chinaLabel">China:</span> <a href="tel:+8618601622722">+86 18601622722</a> |
+                    <span data-i18n="footer.usLabel">US:</span> <a href="tel:+19842913115">+1 9842913115</a>
+                </p>
+                <p>
+                    <span data-i18n="footer.uncEmailLabel">UNC Email:</span> <a href="mailto:joezhang@unc.edu">joezhang@unc.edu</a> |
+                    <span data-i18n="footer.cuhkEmailLabel">CUHKSZ Email:</span> <a href="mailto:zhiqiuzhang@link.cuhk.edu.cn">zhiqiuzhang@link.cuhk.edu.cn</a>
+                </p>
             </div>
-            <p>&copy; <span class="current-year"></span> Zhiqiu (Joe) ZHANG. All rights reserved.</p>
+            <p>&copy; <span class="current-year"></span> <span data-i18n="footer.copyright">Zhiqiu (Joe) ZHANG. All rights reserved.</span></p>
         </div>
     </footer>
+    <script src="../../js/i18n.js"></script>
     <script src="../../js/script.js"></script>
 </body>
 </html>

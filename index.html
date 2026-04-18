@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zhiqiu (Joe) ZHANG</title>
+    <title data-i18n="meta.index">Zhiqiu (Joe) ZHANG</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -11,41 +11,42 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container nav-content">
-            <a href="index.html" class="logo">Joe ZHANG</a>
+            <a href="index.html" class="logo" data-i18n="nav.logo">Joe ZHANG</a>
             <div class="nav-links">
-                <a href="index.html">Home</a>
+                <a href="index.html" data-i18n="nav.home">Home</a>
                 
                 <div class="dropdown">
-                    <button class="dropbtn" onclick="toggleDropdown(event, 'exp-dropdown')">Experiences <i class="fas fa-chevron-down"></i></button>
+                    <button class="dropbtn" onclick="toggleDropdown(event, 'exp-dropdown')"><span data-i18n="nav.experiences">Experiences</span> <i class="fas fa-chevron-down"></i></button>
                     <div id="exp-dropdown" class="dropdown-content">
-                        <a href="pages/experiences/law-firms.html">Law Firms</a>
-                        <a href="pages/experiences/legal-clinic.html">Legal Clinic</a>
-                        <a href="pages/experiences/lawasia-moot.html">LAWASIA Moot</a>
-                        <a href="pages/experiences/translator.html">Translator</a>
+                        <a href="pages/experiences/law-firms.html" data-i18n="nav.exp.lawFirms">Law Firms</a>
+                        <a href="pages/experiences/legal-clinic.html" data-i18n="nav.exp.legalClinic">Legal Clinic</a>
+                        <a href="pages/experiences/lawasia-moot.html" data-i18n="nav.exp.lawasia">LAWASIA Moot</a>
+                        <a href="pages/experiences/translator.html" data-i18n="nav.exp.translator">Translator</a>
                     </div>
                 </div>
 
                 <div class="dropdown">
-                    <button class="dropbtn" onclick="toggleDropdown(event, 'act-dropdown')">Activities <i class="fas fa-chevron-down"></i></button>
+                    <button class="dropbtn" onclick="toggleDropdown(event, 'act-dropdown')"><span data-i18n="nav.activities">Activities</span> <i class="fas fa-chevron-down"></i></button>
                     <div id="act-dropdown" class="dropdown-content">
-                        <a href="pages/activities/public-speaking-team.html">Public Speaking Team</a>
-                        <a href="pages/activities/student-coach.html">Student Coach</a>
-                        <a href="pages/activities/law-society.html">Law Society</a>
-                        <a href="pages/activities/unc-exchange.html">UNC Exchange</a>
+                        <a href="pages/activities/public-speaking-team.html" data-i18n="nav.act.publicSpeaking">Public Speaking Team</a>
+                        <a href="pages/activities/student-coach.html" data-i18n="nav.act.studentCoach">Student Coach</a>
+                        <a href="pages/activities/law-society.html" data-i18n="nav.act.lawSociety">Law Society</a>
+                        <a href="pages/activities/unc-exchange.html" data-i18n="nav.act.uncExchange">UNC Exchange</a>
                     </div>
                 </div>
 
                 <div class="dropdown">
-                    <button class="dropbtn" onclick="toggleDropdown(event, 'proj-dropdown')">Projects <i class="fas fa-chevron-down"></i></button>
+                    <button class="dropbtn" onclick="toggleDropdown(event, 'proj-dropdown')"><span data-i18n="nav.projects">Projects</span> <i class="fas fa-chevron-down"></i></button>
                     <div id="proj-dropdown" class="dropdown-content">
-                        <a href="pages/projects/global-sustainability-challenge.html">Global Sustainability Challenge</a>
-                        <a href="pages/projects/short-stories.html">Short Stories</a>
-                        <a href="pages/projects/publications.html">Publications</a>
-                        <a href="pages/projects/videos.html">Videos</a>
+                        <a href="pages/projects/global-sustainability-challenge.html" data-i18n="nav.proj.gsc">Global Sustainability Challenge</a>
+                        <a href="pages/projects/short-stories.html" data-i18n="nav.proj.shortStories">Short Stories</a>
+                        <a href="pages/projects/publications.html" data-i18n="nav.proj.publications">Publications</a>
+                        <a href="pages/projects/videos.html" data-i18n="nav.proj.videos">Videos</a>
                     </div>
                 </div>
 
                 <button class="theme-toggle" title="Toggle Dark Mode">🌙</button>
+                <button type="button" class="lang-toggle" aria-label="Switch to Chinese">中文</button>
             </div>
             <button class="mobile-menu-btn">☰</button>
         </div>
@@ -55,19 +56,19 @@
     <section id="home" class="hero">
         <div class="container hero-container">
             <div class="hero-content fade-in">
-                <h1 class="typing-text">About</h1>
-                <p>
+                <h1 class="typing-text" data-i18n="index.heroHeading">About</h1>
+                <p data-i18n="index.heroBody">
                     Zhiqiu (Joe) Zhang is pursuing a BA in Legal Communication at The Chinese University of Hong Kong, Shenzhen. Before formal legal training, he independently handled an insurance contract dispute on behalf of a close family member against Dentons LLP. He managed client interviews, evidence collection, pleadings, court appearances, and negotiations. The case concluded with full recovery of RMB 829,346.84. Joe aims to apply to law school in a common law jurisdiction, and act as a bridge between China and the world. 
                 </p>
                 <div class="btn-group">
-                    <a href="mailto:zhiqiuzhang@link.cuhk.edu.cn" class="cta-button">Get In Touch</a>
+                    <a href="mailto:zhiqiuzhang@link.cuhk.edu.cn" class="cta-button" data-i18n="common.getInTouch">Get In Touch</a>
                     <a href="assets/resume.pdf" class="cta-button secondary" target="_blank" download>
-                        <i class="fas fa-download"></i> Download Resume
+                        <i class="fas fa-download"></i> <span data-i18n="common.downloadResume">Download Resume</span>
                     </a>
                 </div>
             </div>
             <div class="headshot-container fade-in">
-                <img src="assets/headshot.jpg" alt="Zhiqiu (Joe) ZHANG" class="headshot">
+                <img src="assets/headshot.jpg" alt="Zhiqiu (Joe) ZHANG" class="headshot" data-i18n="index.headshotAlt">
             </div>
         </div>
     </section>
@@ -75,9 +76,9 @@
     <!-- Contact Section -->
     <section id="contact" class="section">
         <div class="container">
-            <h2 class="section-title fade-in">Get In Touch</h2>
+            <h2 class="section-title fade-in" data-i18n="index.contactHeading">Get In Touch</h2>
             <div style="text-align: center; margin-bottom: 2rem;" class="fade-in">
-                <p style="font-size: 1.2rem;">Email: <a href="mailto:zhiqiuzhang@link.cuhk.edu.cn" style="color: var(--primary-color);">zhiqiuzhang@link.cuhk.edu.cn</a></p>
+                <p style="font-size: 1.2rem;"><span data-i18n="common.emailPrefix">Email: </span><a href="mailto:zhiqiuzhang@link.cuhk.edu.cn" style="color: var(--primary-color);">zhiqiuzhang@link.cuhk.edu.cn</a></p>
             </div>
         </div>
     </section>
@@ -90,10 +91,16 @@
                 <a href="mailto:zhiqiuzhang@link.cuhk.edu.cn"><i class="fas fa-envelope"></i></a>
             </div>
             <div class="footer-contact">
-                <p>China: <a href="tel:+8618601622722">+86 18601622722</a> | US: <a href="tel:+19842913115">+1 9842913115</a></p>
-                <p>UNC Email: <a href="mailto:joezhang@unc.edu">joezhang@unc.edu</a> | CUHKSZ Email: <a href="mailto:zhiqiuzhang@link.cuhk.edu.cn">zhiqiuzhang@link.cuhk.edu.cn</a></p>
+                <p>
+                    <span data-i18n="footer.chinaLabel">China:</span> <a href="tel:+8618601622722">+86 18601622722</a> |
+                    <span data-i18n="footer.usLabel">US:</span> <a href="tel:+19842913115">+1 9842913115</a>
+                </p>
+                <p>
+                    <span data-i18n="footer.uncEmailLabel">UNC Email:</span> <a href="mailto:joezhang@unc.edu">joezhang@unc.edu</a> |
+                    <span data-i18n="footer.cuhkEmailLabel">CUHKSZ Email:</span> <a href="mailto:zhiqiuzhang@link.cuhk.edu.cn">zhiqiuzhang@link.cuhk.edu.cn</a>
+                </p>
             </div>
-            <p>&copy; <span class="current-year"></span> Zhiqiu (Joe) ZHANG. All rights reserved.</p>
+            <p>&copy; <span class="current-year"></span> <span data-i18n="footer.copyright">Zhiqiu (Joe) ZHANG. All rights reserved.</span></p>
         </div>
     </footer>
 
@@ -102,6 +109,7 @@
         <i class="fas fa-arrow-up"></i>
     </div>
 
+    <script src="js/i18n.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>

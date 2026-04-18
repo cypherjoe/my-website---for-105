@@ -31,7 +31,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+            if (typeof window.refreshThemeToggleTitle === 'function') {
+                window.refreshThemeToggleTitle();
+            }
         });
+    }
+    if (typeof window.refreshThemeToggleTitle === 'function') {
+        window.refreshThemeToggleTitle();
     }
 
     // Close Dropdowns when clicking outside
@@ -111,13 +117,13 @@ document.addEventListener('DOMContentLoaded', () => {
         yearSpan.textContent = new Date().getFullYear();
     }
     
-    // Typing Animation for Hero
-    const heroText = document.querySelector('.typing-text');
-    if (heroText) {
+    function initHeroTyping() {
+        const heroText = document.querySelector('.typing-text');
+        if (!heroText) return;
         const text = heroText.textContent;
         heroText.textContent = '';
         let i = 0;
-        
+
         function typeWriter() {
             if (i < text.length) {
                 heroText.textContent += text.charAt(i);
@@ -125,9 +131,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(typeWriter, 100);
             }
         }
-        
+
         setTimeout(typeWriter, 500);
     }
+
+    initHeroTyping();
+    window.addEventListener('sitewideLangChange', () => {
+        initHeroTyping();
+    });
 
     // Image carousel: only <img class="carousel-slide"> — display toggle (not opacity stack) so every slide decodes reliably
     const CAROUSEL_AUTOPLAY_MS = 3000;
