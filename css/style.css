@@ -68,7 +68,8 @@ body::before {
         radial-gradient(ellipse 60% 40% at 90% 100%, rgba(77, 182, 172, 0.06), transparent 45%);
 }
 
-body > * {
+/* Do not wrap .mobile-nav-root — it must stack above page content (see mobile overlay z-index). */
+body > *:not(.mobile-nav-root) {
     position: relative;
     z-index: 1;
 }
@@ -762,22 +763,29 @@ footer {
 
 @media (max-width: 768px),
        (max-height: 520px) and (max-width: 1024px) {
+    /* Toolbar stays above overlay so hamburger / EN / theme always receive touches */
     .navbar {
-        z-index: 10800;
+        z-index: 100002;
     }
 
     .nav-links {
         display: none !important;
     }
 
+    /*
+     * Overlay sits above page content (z-index 1) but below the navbar.
+     * --mobile-nav-overlay-top is set in script from the real navbar bottom (fixes iOS / font scale).
+     */
     .mobile-nav-root {
+        --mobile-nav-overlay-top-fallback: calc(env(safe-area-inset-top, 0px) + 3.75rem);
         display: block;
         position: fixed;
         left: 0;
         right: 0;
         bottom: 0;
-        top: calc(env(safe-area-inset-top, 0px) + clamp(3.65rem, 14vw, 5rem));
-        z-index: 10700;
+        top: var(--mobile-nav-overlay-top, var(--mobile-nav-overlay-top-fallback));
+        z-index: 100001;
+        isolation: isolate;
         pointer-events: none;
         visibility: hidden;
     }
@@ -790,15 +798,17 @@ footer {
     .mobile-nav-backdrop {
         position: absolute;
         inset: 0;
-        background: rgba(8, 10, 18, 0.58);
+        z-index: 1;
+        background: rgba(6, 8, 14, 0.62);
         opacity: 0;
         transition: opacity 0.32s ease;
         -webkit-tap-highlight-color: transparent;
         cursor: pointer;
+        touch-action: manipulation;
     }
 
     [data-theme="dark"] .mobile-nav-backdrop {
-        background: rgba(0, 0, 0, 0.72);
+        background: rgba(0, 0, 0, 0.78);
     }
 
     .mobile-nav-root.active .mobile-nav-backdrop {
@@ -808,10 +818,15 @@ footer {
     .mobile-nav-sheet {
         position: absolute;
         top: 0;
-        bottom: 0;
         right: 0;
+        bottom: 0;
+        left: auto;
         width: min(26rem, 100%);
         max-width: 100%;
+        z-index: 2;
+        height: 100%;
+        max-height: 100%;
+        min-height: 0;
         background: var(--bg-color);
         border-left: 1px solid var(--border-color);
         box-shadow: -16px 0 48px rgba(0, 0, 0, 0.22);
@@ -820,6 +835,7 @@ footer {
         transform: translate3d(105%, 0, 0);
         transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1);
         overflow: hidden;
+        touch-action: manipulation;
     }
 
     [data-theme="dark"] .mobile-nav-sheet {
@@ -874,13 +890,14 @@ footer {
     }
 
     .mobile-nav-sheet__scroll {
-        flex: 1;
-        min-height: 0;
-        overflow-y: auto;
+        flex: 1 1 0;
+        min-height: 12rem;
+        overflow-y: scroll;
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior-y: contain;
         padding: 0.75rem 0.9rem calc(1.25rem + env(safe-area-inset-bottom, 12px));
+        color: var(--text-color);
     }
 
     .mobile-nav-sheet__footer {
@@ -904,6 +921,8 @@ footer {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+        min-height: min-content;
+        color: var(--text-color);
     }
 
     .mobile-nav-home {
