@@ -5,21 +5,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const navLinksEl = document.querySelector('.nav-links');
 
-    /** Convert cloned desktop dropdowns into accordion <details> for touch-friendly mobile nav */
-    function transformDropdownsToDetails(container) {
-        container.querySelectorAll('.dropdown').forEach((dd) => {
+    /**
+     * Build mobile menu DOM by walking the real .nav-links (do not clone-then-replace dropdowns —
+     * that pattern is fragile on iOS Safari). Preserves hrefs and data-i18n nodes for EN/中文.
+     */
+    function createMobileNavTreeFromSource(sourceEl) {
+        const wrap = document.createElement('div');
+        wrap.className = 'mobile-nav-tree';
+
+        Array.from(sourceEl.children).forEach((child) => {
+            if (child.tagName === 'A' && child.getAttribute('href')) {
+                const a = document.createElement('a');
+                a.setAttribute('href', child.getAttribute('href'));
+                a.classList.add('mobile-nav-home');
+                const span = child.querySelector('[data-i18n]');
+                if (span) {
+                    a.appendChild(span.cloneNode(true));
+                } else {
+                    a.textContent = child.textContent.replace(/\s+/g, ' ').trim();
+                }
+                wrap.appendChild(a);
+                return;
+            }
+
+            if (!child.classList || !child.classList.contains('dropdown')) {
+                return;
+            }
+
             const details = document.createElement('details');
             details.className = 'mobile-nav-details';
 
             const summary = document.createElement('summary');
             summary.className = 'mobile-nav-details__summary';
-
-            const btn = dd.querySelector('.dropbtn');
-            const labelSpan = btn && btn.querySelector('span[data-i18n]');
-            if (labelSpan) {
-                summary.appendChild(labelSpan.cloneNode(true));
-            } else if (btn) {
-                summary.textContent = btn.textContent.replace(/\s+/g, ' ').trim();
+            const lab = child.querySelector('.dropbtn span[data-i18n]');
+            if (lab) {
+                summary.appendChild(lab.cloneNode(true));
+            } else {
+                const db = child.querySelector('.dropbtn');
+                summary.textContent = db ? db.textContent.replace(/\s+/g, ' ').trim() : '';
             }
 
             const chev = document.createElement('span');
@@ -29,33 +52,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const panel = document.createElement('div');
             panel.className = 'mobile-nav-details__panel';
-            const dc = dd.querySelector('.dropdown-content');
-            if (dc) {
-                while (dc.firstChild) {
-                    panel.appendChild(dc.firstChild);
+            child.querySelectorAll('.dropdown-content a[href]').forEach((lnk) => {
+                const a = document.createElement('a');
+                a.setAttribute('href', lnk.getAttribute('href'));
+                const sp = lnk.querySelector('[data-i18n]');
+                if (sp) {
+                    a.appendChild(sp.cloneNode(true));
+                } else {
+                    a.textContent = lnk.textContent.replace(/\s+/g, ' ').trim();
                 }
-            }
+                panel.appendChild(a);
+            });
 
             details.appendChild(summary);
             details.appendChild(panel);
-            dd.replaceWith(details);
+            wrap.appendChild(details);
         });
+
+        return wrap;
     }
 
     function buildMobileNavigation() {
         if (!navLinksEl || document.querySelector('.mobile-nav-root')) return;
 
-        const clone = navLinksEl.cloneNode(true);
-        clone.classList.add('mobile-nav-tree');
-        clone.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
-        clone.querySelectorAll('[onclick]').forEach((el) => el.removeAttribute('onclick'));
-
-        transformDropdownsToDetails(clone);
-
-        const homeLink = clone.querySelector('a[href]');
-        if (homeLink) {
-            homeLink.classList.add('mobile-nav-home');
-        }
+        const tree = createMobileNavTreeFromSource(navLinksEl);
 
         const root = document.createElement('div');
         root.className = 'mobile-nav-root';
@@ -91,23 +111,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const body = document.createElement('div');
         body.className = 'mobile-nav-sheet__scroll';
-        body.appendChild(clone);
+        body.appendChild(tree);
 
         const resumeAnchor = document.getElementById('resume-download-link');
         if (resumeAnchor) {
             const foot = document.createElement('div');
-            foot.className = 'mobile-nav-sheet__footer';
+            foot.className = 'mobile-nav-sheet__footer mobile-nav-sheet__footer--in-scroll';
             const ra = resumeAnchor.cloneNode(true);
             ra.removeAttribute('id');
             ra.classList.add('cta-button', 'secondary', 'mobile-nav-resume-cta');
             foot.appendChild(ra);
-            sheet.appendChild(header);
-            sheet.appendChild(body);
-            sheet.appendChild(foot);
-        } else {
-            sheet.appendChild(header);
-            sheet.appendChild(body);
+            body.appendChild(foot);
         }
+
+        sheet.appendChild(header);
+        sheet.appendChild(body);
 
         root.appendChild(backdrop);
         root.appendChild(sheet);
@@ -133,7 +151,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const root = document.querySelector('.mobile-nav-root');
         const nav = document.querySelector('.navbar');
         if (!root || !nav || !mobileNavMql().matches) return;
-        const bottom = Math.ceil(nav.getBoundingClientRect().bottom);
+        const rect = nav.getBoundingClientRect();
+        const vh =
+            window.visualViewport && typeof window.visualViewport.height === 'number'
+                ? window.visualViewport.height
+                : window.innerHeight;
+        let bottom = Math.ceil(rect.bottom);
+        bottom = Math.min(bottom, Math.max(0, vh - 8));
+        bottom = Math.max(bottom, Math.ceil(rect.top) + 48);
         root.style.setProperty('--mobile-nav-overlay-top', `${bottom}px`);
     }
 
@@ -153,13 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileMenuBtn.textContent = open ? '\u2715' : '\u2630';
         mobileMenuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
         document.body.classList.toggle('menu-open', open);
-
-        if (open) {
-            const closeEl = root.querySelector('.mobile-nav-close');
-            if (closeEl) {
-                window.requestAnimationFrame(() => closeEl.focus());
-            }
-        }
     }
 
     buildMobileNavigation();
@@ -355,16 +373,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
         slides.forEach((img) => {
             const fb = img.getAttribute('data-fallback-src');
-            if (fb) {
-                img.addEventListener(
-                    'error',
-                    function onFallback() {
-                        img.removeEventListener('error', onFallback);
+            img.addEventListener(
+                'error',
+                function onImgError() {
+                    if (!img.dataset.caseFallbackTried && img.src) {
+                        try {
+                            const u = new URL(img.src);
+                            const m = u.pathname.match(/^(.+\/)([^/]+)$/);
+                            if (m) {
+                                const fn = m[2];
+                                const low = fn.toLowerCase();
+                                if (fn !== low) {
+                                    img.dataset.caseFallbackTried = '1';
+                                    u.pathname = m[1] + low;
+                                    img.src = u.href;
+                                    return;
+                                }
+                            }
+                        } catch (e) {
+                            /* ignore */
+                        }
+                    }
+                    if (fb && !img.dataset.fbFallbackTried) {
+                        img.dataset.fbFallbackTried = '1';
+                        img.removeEventListener('error', onImgError);
                         img.src = fb;
-                    },
-                    { once: true }
-                );
-            }
+                    }
+                },
+                false
+            );
         });
 
         function showSlide(index) {
