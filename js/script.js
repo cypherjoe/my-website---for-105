@@ -1,49 +1,169 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Navigation Toggle
+    const mobileNavMql = () =>
+        window.matchMedia('(max-width: 768px), (max-height: 520px) and (max-width: 1024px)');
+
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const navLinks = document.querySelector('.nav-links');
+    const navLinksEl = document.querySelector('.nav-links');
 
-    if (mobileMenuBtn && navLinks) {
-        const mobileNavMql = () =>
-            window.matchMedia('(max-width: 768px), (max-height: 520px) and (max-width: 1024px)');
+    /** Convert cloned desktop dropdowns into accordion <details> for touch-friendly mobile nav */
+    function transformDropdownsToDetails(container) {
+        container.querySelectorAll('.dropdown').forEach((dd) => {
+            const details = document.createElement('details');
+            details.className = 'mobile-nav-details';
 
-        let navBackdrop = document.querySelector('.nav-backdrop');
-        if (!navBackdrop) {
-            navBackdrop = document.createElement('div');
-            navBackdrop.className = 'nav-backdrop';
-            navBackdrop.setAttribute('aria-hidden', 'true');
-            document.body.appendChild(navBackdrop);
+            const summary = document.createElement('summary');
+            summary.className = 'mobile-nav-details__summary';
+
+            const btn = dd.querySelector('.dropbtn');
+            const labelSpan = btn && btn.querySelector('span[data-i18n]');
+            if (labelSpan) {
+                summary.appendChild(labelSpan.cloneNode(true));
+            } else if (btn) {
+                summary.textContent = btn.textContent.replace(/\s+/g, ' ').trim();
+            }
+
+            const chev = document.createElement('span');
+            chev.className = 'mobile-nav-details__chevron';
+            chev.setAttribute('aria-hidden', 'true');
+            summary.appendChild(chev);
+
+            const panel = document.createElement('div');
+            panel.className = 'mobile-nav-details__panel';
+            const dc = dd.querySelector('.dropdown-content');
+            if (dc) {
+                while (dc.firstChild) {
+                    panel.appendChild(dc.firstChild);
+                }
+            }
+
+            details.appendChild(summary);
+            details.appendChild(panel);
+            dd.replaceWith(details);
+        });
+    }
+
+    function buildMobileNavigation() {
+        if (!navLinksEl || document.querySelector('.mobile-nav-root')) return;
+
+        const clone = navLinksEl.cloneNode(true);
+        clone.classList.add('mobile-nav-tree');
+        clone.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
+        clone.querySelectorAll('[onclick]').forEach((el) => el.removeAttribute('onclick'));
+
+        transformDropdownsToDetails(clone);
+
+        const homeLink = clone.querySelector('a[href]');
+        if (homeLink) {
+            homeLink.classList.add('mobile-nav-home');
         }
 
-        const setMenuOpen = (open) => {
-            navLinks.classList.toggle('active', open);
-            mobileMenuBtn.textContent = open ? '✕' : '☰';
-            mobileMenuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-            document.body.classList.toggle('menu-open', open);
-            navBackdrop.classList.toggle('active', open);
-            navBackdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
-        };
+        const root = document.createElement('div');
+        root.className = 'mobile-nav-root';
+        root.setAttribute('aria-hidden', 'true');
 
-        mobileMenuBtn.addEventListener('click', () => {
-            const open = !navLinks.classList.contains('active');
-            setMenuOpen(open);
+        const backdrop = document.createElement('div');
+        backdrop.className = 'mobile-nav-backdrop';
+
+        const sheet = document.createElement('div');
+        sheet.className = 'mobile-nav-sheet';
+        sheet.setAttribute('role', 'dialog');
+        sheet.setAttribute('aria-modal', 'true');
+        sheet.setAttribute('aria-labelledby', 'mobile-nav-title');
+
+        const header = document.createElement('header');
+        header.className = 'mobile-nav-sheet__header';
+
+        const title = document.createElement('span');
+        title.id = 'mobile-nav-title';
+        title.className = 'mobile-nav-sheet__title';
+        title.setAttribute('data-i18n', 'mobileNav.menuTitle');
+
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'mobile-nav-close';
+        closeBtn.setAttribute('data-i18n-aria-label', 'mobileNav.close');
+        closeBtn.setAttribute('aria-label', 'Close menu');
+        closeBtn.innerHTML =
+            '<span class="mobile-nav-close__icon" aria-hidden="true">\u2715</span>';
+
+        header.appendChild(title);
+        header.appendChild(closeBtn);
+
+        const body = document.createElement('div');
+        body.className = 'mobile-nav-sheet__scroll';
+        body.appendChild(clone);
+
+        const resumeAnchor = document.getElementById('resume-download-link');
+        if (resumeAnchor) {
+            const foot = document.createElement('div');
+            foot.className = 'mobile-nav-sheet__footer';
+            const ra = resumeAnchor.cloneNode(true);
+            ra.removeAttribute('id');
+            ra.classList.add('cta-button', 'secondary', 'mobile-nav-resume-cta');
+            foot.appendChild(ra);
+            sheet.appendChild(header);
+            sheet.appendChild(body);
+            sheet.appendChild(foot);
+        } else {
+            sheet.appendChild(header);
+            sheet.appendChild(body);
+        }
+
+        root.appendChild(backdrop);
+        root.appendChild(sheet);
+        document.body.appendChild(root);
+
+        closeBtn.addEventListener('click', () => setMobileMenuOpen(false));
+        backdrop.addEventListener('click', () => setMobileMenuOpen(false));
+
+        root.querySelectorAll('a[href]').forEach((a) => {
+            a.addEventListener('click', () => setMobileMenuOpen(false));
         });
 
-        navBackdrop.addEventListener('click', () => setMenuOpen(false));
+        if (typeof window.applySitewideLanguage === 'function') {
+            window.applySitewideLanguage(window.getSitewideLang(), true);
+        }
+    }
 
-        document.querySelectorAll('.nav-links a:not(.dropbtn)').forEach(link => {
-            link.addEventListener('click', () => setMenuOpen(false));
+    function setMobileMenuOpen(open) {
+        const root = document.querySelector('.mobile-nav-root');
+        if (!root || !mobileMenuBtn) return;
+
+        root.classList.toggle('active', open);
+        root.setAttribute('aria-hidden', open ? 'false' : 'true');
+        mobileMenuBtn.textContent = open ? '\u2715' : '\u2630';
+        mobileMenuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        document.body.classList.toggle('menu-open', open);
+
+        if (open) {
+            const closeEl = root.querySelector('.mobile-nav-close');
+            if (closeEl) {
+                window.requestAnimationFrame(() => closeEl.focus());
+            }
+        }
+    }
+
+    buildMobileNavigation();
+
+    if (mobileMenuBtn && navLinksEl) {
+        mobileMenuBtn.addEventListener('click', () => {
+            const root = document.querySelector('.mobile-nav-root');
+            if (!root) return;
+            const open = !root.classList.contains('active');
+            setMobileMenuOpen(open);
         });
 
         window.addEventListener('resize', () => {
             if (!mobileNavMql().matches) {
-                setMenuOpen(false);
+                setMobileMenuOpen(false);
             }
         });
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
-                setMenuOpen(false);
+            const root = document.querySelector('.mobile-nav-root');
+            if (e.key === 'Escape' && root && root.classList.contains('active')) {
+                setMobileMenuOpen(false);
+                mobileMenuBtn.focus();
             }
         });
     }
@@ -71,30 +191,32 @@ document.addEventListener('DOMContentLoaded', () => {
         window.refreshThemeToggleTitle();
     }
 
-    // Close Dropdowns when clicking outside
-    window.onclick = function(event) {
+    // Close Dropdowns when clicking outside (desktop hover menus)
+    window.onclick = function (event) {
         if (!event.target.matches('.dropbtn') && !event.target.matches('.dropbtn i')) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            var dropbtns = document.getElementsByClassName("dropdown");
-            
+            var dropdowns = document.getElementsByClassName('dropdown-content');
+            var dropbtns = document.getElementsByClassName('dropdown');
+
             for (var i = 0; i < dropdowns.length; i++) {
                 var openDropdown = dropdowns[i];
                 if (openDropdown.classList.contains('show')) {
                     openDropdown.classList.remove('show');
                 }
             }
-            
-            for (var i = 0; i < dropbtns.length; i++) {
-                dropbtns[i].classList.remove('active');
+
+            for (var j = 0; j < dropbtns.length; j++) {
+                dropbtns[j].classList.remove('active');
             }
         }
-    }
+    };
 
     // Smooth Scroll for Anchor Links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
         anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
+            const target = document.querySelector(href);
             if (target) {
                 target.scrollIntoView({
                     behavior: 'smooth',
@@ -130,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+        entries.forEach((entry) => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
                 observer.unobserve(entry.target); // Only animate once
@@ -138,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    document.querySelectorAll('.fade-in').forEach(el => {
+    document.querySelectorAll('.fade-in').forEach((el) => {
         observer.observe(el);
     });
 
@@ -147,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (yearSpan) {
         yearSpan.textContent = new Date().getFullYear();
     }
-    
+
     function initHeroTyping() {
         const heroText = document.querySelector('.typing-text');
         if (!heroText) return;
@@ -245,24 +367,24 @@ document.addEventListener('DOMContentLoaded', () => {
 /* Toggle Dropdown Function (Global Scope) */
 function toggleDropdown(event, id) {
     event.stopPropagation(); // Prevent closing immediately
-    
+
     // Close all other dropdowns first
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var dropbtns = document.getElementsByClassName("dropdown");
-    
+    var dropdowns = document.getElementsByClassName('dropdown-content');
+    var dropbtns = document.getElementsByClassName('dropdown');
+
     for (var i = 0; i < dropdowns.length; i++) {
         if (dropdowns[i].id !== id) {
             dropdowns[i].classList.remove('show');
         }
     }
-    
-    for (var i = 0; i < dropbtns.length; i++) {
-        if (!dropbtns[i].contains(event.target)) {
-            dropbtns[i].classList.remove('active');
+
+    for (var j = 0; j < dropbtns.length; j++) {
+        if (!dropbtns[j].contains(event.target)) {
+            dropbtns[j].classList.remove('active');
         }
     }
 
     // Toggle current
-    document.getElementById(id).classList.toggle("show");
-    event.target.closest('.dropdown').classList.toggle("active");
+    document.getElementById(id).classList.toggle('show');
+    event.target.closest('.dropdown').classList.toggle('active');
 }

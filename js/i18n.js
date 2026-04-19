@@ -35,6 +35,8 @@
             'theme.titleDark': 'Switch to Light Mode',
             'lang.ariaToZh': 'Switch to Chinese',
             'lang.ariaToEn': 'Switch to English',
+            'mobileNav.menuTitle': 'Menu',
+            'mobileNav.close': 'Close menu',
             'meta.index': 'Zhiqiu (Joe) ZHANG',
             'meta.lawFirms': 'Law Firms | Zhiqiu (Joe) ZHANG',
             'meta.legalClinic': 'Legal Clinic | Zhiqiu (Joe) ZHANG',
@@ -132,6 +134,8 @@
             'theme.titleDark': '切换浅色模式',
             'lang.ariaToZh': '切换到中文',
             'lang.ariaToEn': 'Switch to English',
+            'mobileNav.menuTitle': '菜单',
+            'mobileNav.close': '关闭菜单',
             'meta.index': '张知秋',
             'meta.lawFirms': '律师事务所 | 张知秋',
             'meta.legalClinic': '法律诊所 | 张知秋',
@@ -243,6 +247,13 @@
             el.textContent = text;
         });
 
+        document.querySelectorAll('[data-i18n-aria-label]').forEach(function (el) {
+            var akey = el.getAttribute('data-i18n-aria-label');
+            if (akey) {
+                el.setAttribute('aria-label', tr(lang, akey));
+            }
+        });
+
         updateLangSwitchUI(lang);
         updateResumeDownloadLink(lang);
 
@@ -253,15 +264,21 @@
     }
 
     function updateResumeDownloadLink(lang) {
-        var a = document.getElementById('resume-download-link');
-        if (!a) return;
-        if (lang === 'zh') {
-            a.setAttribute('href', 'assets/resume-zh.pdf');
-            a.setAttribute('download', 'resume-zh.pdf');
-        } else {
-            a.setAttribute('href', 'assets/resume.pdf');
-            a.setAttribute('download', 'resume.pdf');
+        function swapResumePdf(el) {
+            if (!el) return;
+            var href = el.getAttribute('href');
+            if (!href || href.indexOf('resume') === -1) return;
+            if (lang === 'zh') {
+                el.setAttribute('href', href.replace(/resume\.pdf(\?|$)/i, 'resume-zh.pdf$1'));
+                el.setAttribute('download', 'resume-zh.pdf');
+            } else {
+                el.setAttribute('href', href.replace(/resume-zh\.pdf(\?|$)/i, 'resume.pdf$1'));
+                el.setAttribute('download', 'resume.pdf');
+            }
         }
+
+        swapResumePdf(document.getElementById('resume-download-link'));
+        document.querySelectorAll('.mobile-nav-resume-cta').forEach(swapResumePdf);
     }
 
     function updateLangSwitchUI(lang) {
