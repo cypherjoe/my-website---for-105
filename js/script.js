@@ -4,11 +4,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelector('.nav-links');
 
     if (mobileMenuBtn && navLinks) {
+        const mobileNavMql = () =>
+            window.matchMedia('(max-width: 768px), (max-height: 520px) and (max-width: 1024px)');
+
+        let navBackdrop = document.querySelector('.nav-backdrop');
+        if (!navBackdrop) {
+            navBackdrop = document.createElement('div');
+            navBackdrop.className = 'nav-backdrop';
+            navBackdrop.setAttribute('aria-hidden', 'true');
+            document.body.appendChild(navBackdrop);
+        }
+
         const setMenuOpen = (open) => {
             navLinks.classList.toggle('active', open);
             mobileMenuBtn.textContent = open ? '✕' : '☰';
             mobileMenuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
             document.body.classList.toggle('menu-open', open);
+            navBackdrop.classList.toggle('active', open);
+            navBackdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
         };
 
         mobileMenuBtn.addEventListener('click', () => {
@@ -16,12 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
             setMenuOpen(open);
         });
 
+        navBackdrop.addEventListener('click', () => setMenuOpen(false));
+
         document.querySelectorAll('.nav-links a:not(.dropbtn)').forEach(link => {
             link.addEventListener('click', () => setMenuOpen(false));
         });
 
         window.addEventListener('resize', () => {
-            if (window.matchMedia('(min-width: 769px)').matches) {
+            if (!mobileNavMql().matches) {
+                setMenuOpen(false);
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
                 setMenuOpen(false);
             }
         });

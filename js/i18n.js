@@ -256,10 +256,23 @@
         });
 
         updateLangSwitchUI(lang);
+        updateResumeDownloadLink(lang);
 
         refreshThemeToggleTitle();
         if (!silent && prevLang !== lang) {
             window.dispatchEvent(new CustomEvent('sitewideLangChange', { detail: { lang: lang } }));
+        }
+    }
+
+    function updateResumeDownloadLink(lang) {
+        var a = document.getElementById('resume-download-link');
+        if (!a) return;
+        if (lang === 'zh') {
+            a.setAttribute('href', 'assets/resume-zh.pdf');
+            a.setAttribute('download', 'resume-zh.pdf');
+        } else {
+            a.setAttribute('href', 'assets/resume.pdf');
+            a.setAttribute('download', 'resume.pdf');
         }
     }
 
