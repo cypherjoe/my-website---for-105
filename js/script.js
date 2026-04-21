@@ -336,19 +336,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Image carousel: only <img class="carousel-slide"> — display toggle (not opacity stack) so every slide decodes reliably
-    const CAROUSEL_AUTOPLAY_MS = 3000;
+    const CAROUSEL_AUTOPLAY_MS = 2300;
 
     function waitForSlideImages(slides) {
         return Promise.all(
             Array.from(slides).map(
                 (img) =>
                     new Promise((resolve) => {
-                        if (!(img instanceof HTMLImageElement)) {
+                        let settled = false;
+                        const finish = () => {
+                            if (settled) return;
+                            settled = true;
                             resolve();
+                        };
+                        const safetyTimer = window.setTimeout(finish, 2500);
+                        if (!(img instanceof HTMLImageElement)) {
+                            window.clearTimeout(safetyTimer);
+                            finish();
                             return;
                         }
                         img.loading = 'eager';
-                        const done = () => resolve();
+                        const done = () => {
+                            window.clearTimeout(safetyTimer);
+                            finish();
+                        };
                         if (img.complete && img.naturalWidth > 0) {
                             if (img.decode) {
                                 img.decode().then(done).catch(done);
