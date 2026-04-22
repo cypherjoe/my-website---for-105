@@ -330,6 +330,52 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(typeWriter, 500);
     }
 
+    function initSectionTitleEffects() {
+        const sectionTitles = document.querySelectorAll('.section-title');
+        if (sectionTitles.length === 0) return;
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        sectionTitles.forEach((title, index) => {
+            if (!title) return;
+
+            // Stop any in-flight typing before restarting (e.g., language switch).
+            if (title._typingTimer) {
+                clearInterval(title._typingTimer);
+                title._typingTimer = null;
+            }
+
+            const fullText = title.textContent.trim();
+            if (!fullText) return;
+
+            title.classList.add('fancy-title');
+
+            if (prefersReducedMotion) {
+                title.textContent = fullText;
+                title.classList.remove('is-typing');
+                return;
+            }
+
+            title.textContent = '';
+            title.classList.add('is-typing');
+
+            let i = 0;
+            const speedMs = 34;
+            const timer = setInterval(() => {
+                if (i < fullText.length) {
+                    title.textContent += fullText.charAt(i);
+                    i += 1;
+                    return;
+                }
+                clearInterval(timer);
+                title._typingTimer = null;
+                title.classList.remove('is-typing');
+            }, speedMs);
+
+            title._typingTimer = timer;
+        });
+    }
+
     function boldNumbersInDescriptions() {
         const descriptionNodes = document.querySelectorAll('.text-placeholder p');
         if (descriptionNodes.length === 0) return;
@@ -477,9 +523,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initHeroTyping();
+    initSectionTitleEffects();
     boldNumbersInDescriptions();
     window.addEventListener('sitewideLangChange', () => {
         initHeroTyping();
+        initSectionTitleEffects();
         boldNumbersInDescriptions();
     });
 

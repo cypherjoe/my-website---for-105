@@ -478,6 +478,62 @@ img {
     text-shadow: 0 2px 20px rgba(74, 144, 226, 0.12);
 }
 
+.section-title.fancy-title {
+    position: relative;
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 0.35rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    text-shadow: none;
+    animation: sectionTitleGlow 3s ease-in-out infinite alternate;
+}
+
+.section-title.fancy-title::before {
+    content: '';
+    position: absolute;
+    left: 12%;
+    right: 12%;
+    bottom: 0;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(74, 144, 226, 0.25), rgba(80, 227, 194, 0.85), rgba(74, 144, 226, 0.25));
+    box-shadow: 0 0 14px rgba(74, 144, 226, 0.3);
+}
+
+.section-title.fancy-title.is-typing::after {
+    content: '';
+    position: absolute;
+    right: -0.08em;
+    top: 0.12em;
+    width: 0.08em;
+    height: 0.85em;
+    border-radius: 2px;
+    background: currentColor;
+    animation: sectionTitleCaret 0.7s steps(1, end) infinite;
+}
+
+@keyframes sectionTitleGlow {
+    0% {
+        filter: drop-shadow(0 0 0 rgba(74, 144, 226, 0.05));
+    }
+    100% {
+        filter: drop-shadow(0 0 8px rgba(74, 144, 226, 0.22));
+    }
+}
+
+@keyframes sectionTitleCaret {
+    50% {
+        opacity: 0;
+    }
+}
+
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

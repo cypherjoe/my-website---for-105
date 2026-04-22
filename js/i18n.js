@@ -53,7 +53,7 @@
             'meta.publications': 'Publications | Zhiqiu (Joe) ZHANG',
             'meta.videos': 'Videos | Zhiqiu (Joe) ZHANG',
             'index.heroHeading': 'About',
-            'index.heroBody': 'Zhiqiu (Joe) Zhang is pursuing a BA in Legal Communication at The Chinese University of Hong Kong, Shenzhen. Before formal legal training, he independently handled an insurance contract dispute on behalf of a close family member against Dentons LLP. He managed client interviews, evidence collection, pleadings, court appearances, and negotiations. The case concluded with full recovery of RMB 829,346.84. Joe aims to apply to law school in a common law jurisdiction, and act as a bridge between China and the world.',
+            'index.heroBody': 'Zhiqiu (Joe) Zhang is pursuing a BA in Legal Communication at The Chinese University of Hong Kong, Shenzhen. Before formal legal training, he independently handled an insurance contract dispute on behalf of a close family member against a big company called Sino Life Insurance Co., Ltd. represented by a big law firm called Dentons LLP. He managed client interviews, evidence collection, pleadings, court appearances, and negotiations. The case concluded with Joe winning big: Joe\'s client got full recovery of RMB 829,346.84. Joe aims to apply to law school in a common law jurisdiction, and act as a bridge between China and the world.',
             'index.quotesHeading': 'Favorite Quotes',
             'index.quote1.text': '"Prosperous lawyers, prosperous nation."',
             'index.quote1.author': '-- Prof. Jiang Ping',
@@ -169,7 +169,7 @@
             'meta.publications': '发表 | 张知秋',
             'meta.videos': '视频 | 张知秋',
             'index.heroHeading': '关于',
-            'index.heroBody': '张知秋就读于香港中文大学（深圳）英语法律学士学位项目。在正式接受法律训练之前，他曾独立代理一位近亲属与大成律师事务所的保险合同纠纷，负责客户访谈、证据收集、诉状、出庭与谈判。案件最终以全额收回人民币 829,346.84 元结案。张知秋希望申请普通法法域的法学院，并在中国与世界之间担任桥梁。',
+            'index.heroBody': '张知秋就读于香港中文大学（深圳）英语法律学士学位项目。在正式接受法律训练之前，他曾独立代理一位近亲属与一家名为 Sino Life Insurance Co., Ltd. 的大型保险公司之间的保险合同纠纷（该公司由大型律所 Dentons LLP 代理），负责客户访谈、证据收集、诉状、出庭与谈判。案件结果是张知秋大获全胜：张知秋的当事人全额追回人民币 829,346.84 元。张知秋希望申请普通法法域的法学院，并在中国与世界之间担任桥梁。',
             'index.quotesHeading': '我最喜欢的两句话',
             'index.quote1.text': '“律师兴则国家兴”',
             'index.quote1.author': '-- 江平教授',
@@ -238,10 +238,91 @@
         }
     };
 
-    function getLang() {
+    function getSavedLang() {
         var s = localStorage.getItem(STORAGE_KEY);
         if (s === 'zh' || s === 'en') return s;
+        return null;
+    }
+
+    function inferLangFromCountryCode(countryCode) {
+        var c = (countryCode || '').toUpperCase();
+        if (c === 'CN' || c === 'HK' || c === 'TW') return 'zh';
         return 'en';
+    }
+
+    function detectLangBySystem() {
+        var raw = '';
+        if (navigator.languages && navigator.languages.length > 0) {
+            raw = navigator.languages[0];
+        } else if (navigator.language) {
+            raw = navigator.language;
+        }
+        raw = (raw || '').toLowerCase();
+        if (!raw) return null;
+        if (raw.indexOf('zh') === 0) return 'zh';
+        if (raw.indexOf('en') === 0) return 'en';
+        return null;
+    }
+
+    function fetchJsonWithTimeout(url, timeoutMs) {
+        return new Promise(function (resolve, reject) {
+            var done = false;
+            var timer = setTimeout(function () {
+                if (done) return;
+                done = true;
+                reject(new Error('timeout'));
+            }, timeoutMs);
+
+            fetch(url, { cache: 'no-store' })
+                .then(function (resp) {
+                    if (!resp.ok) throw new Error('http_' + resp.status);
+                    return resp.json();
+                })
+                .then(function (json) {
+                    if (done) return;
+                    done = true;
+                    clearTimeout(timer);
+                    resolve(json);
+                })
+                .catch(function (err) {
+                    if (done) return;
+                    done = true;
+                    clearTimeout(timer);
+                    reject(err);
+                });
+        });
+    }
+
+    function detectLangByIP() {
+        var providers = [
+            {
+                url: 'https://ipwho.is/',
+                pickCountry: function (data) {
+                    return data && data.country_code;
+                }
+            },
+            {
+                url: 'https://ipapi.co/json/',
+                pickCountry: function (data) {
+                    return data && data.country_code;
+                }
+            }
+        ];
+
+        var idx = 0;
+        function tryNext() {
+            if (idx >= providers.length) return Promise.resolve('en');
+            var provider = providers[idx++];
+            return fetchJsonWithTimeout(provider.url, 2500)
+                .then(function (data) {
+                    return inferLangFromCountryCode(provider.pickCountry(data));
+                })
+                .catch(function () {
+                    return tryNext();
+                });
+        }
+
+        return tryNext();
     }
 
     function tr(lang, key) {
@@ -332,7 +413,7 @@
     function refreshThemeToggleTitle() {
         var themeToggle = document.querySelector('.theme-toggle');
         if (!themeToggle) return;
-        var lang = getLang();
+        var lang = document.documentElement.getAttribute('data-lang') || getSavedLang() || 'en';
         var theme = document.documentElement.getAttribute('data-theme') || 'light';
         var key = theme === 'dark' ? 'theme.titleDark' : 'theme.titleLight';
         themeToggle.setAttribute('title', tr(lang, key));
@@ -340,10 +421,24 @@
 
     window.refreshThemeToggleTitle = refreshThemeToggleTitle;
     window.applySitewideLanguage = applyLanguage;
-    window.getSitewideLang = getLang;
+    window.getSitewideLang = function () {
+        return document.documentElement.getAttribute('data-lang') || getSavedLang() || 'en';
+    };
 
     document.addEventListener('DOMContentLoaded', function () {
-        applyLanguage(getLang(), true);
+        var savedLang = getSavedLang();
+        if (savedLang) {
+            applyLanguage(savedLang, true);
+        } else {
+            var systemLang = detectLangBySystem();
+            if (systemLang) {
+                applyLanguage(systemLang, true);
+            } else {
+                detectLangByIP().then(function (autoLang) {
+                    applyLanguage(autoLang, true);
+                });
+            }
+        }
 
         document.querySelectorAll('.lang-switch-btn').forEach(function (btn) {
             btn.addEventListener('click', function () {
