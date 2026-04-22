@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Admin | Joe ZHANG</title>
+    <link rel="stylesheet" href="css/style.css?v=9">
+    <style>
+        .admin-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .admin-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .admin-controls {
+            display: grid;
+            grid-template-columns: 1fr 200px 200px 150px;
+            gap: 0.75rem;
+        }
+
+        .admin-controls input,
+        .admin-controls select,
+        .admin-controls button {
+            width: 100%;
+            padding: 0.7rem 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: inherit;
+        }
+
+        .admin-controls button {
+            cursor: pointer;
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .admin-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.75rem;
+            font-size: 0.92rem;
+            opacity: 0.85;
+        }
+
+        .admin-table-wrap {
+            overflow: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 980px;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+            font-size: 0.92rem;
+        }
+
+        .admin-table th {
+            background: var(--bg-secondary);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .admin-message {
+            white-space: pre-wrap;
+            max-width: 380px;
+        }
+
+        @media (max-width: 980px) {
+            .admin-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="section" style="padding-top: 2.5rem; min-height: 100vh;">
+        <div class="admin-wrap">
+            <h1 class="section-title" style="margin-bottom: 1rem;">Feedback Admin Dashboard</h1>
+
+            <div class="admin-card">
+                <div class="admin-controls">
+                    <input id="admin-search" type="text" placeholder="Search name/email/subject/message">
+                    <select id="admin-lang-filter">
+                        <option value="">All languages</option>
+                        <option value="en">English</option>
+                        <option value="zh">Chinese</option>
+                    </select>
+                    <input id="admin-token" type="password" placeholder="Admin token (optional)">
+                    <button id="admin-refresh" type="button">Refresh</button>
+                </div>
+                <div class="admin-meta">
+                    <span id="admin-count">0 records</span>
+                    <span id="admin-status">Ready</span>
+                </div>
+            </div>
+
+            <div class="admin-card admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Received At</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Message</th>
+                            <th>Language</th>
+                            <th>Timezone</th>
+                            <th>IP</th>
+                            <th>Page</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <script src="js/admin-feedback.js"></script>
+</body>
+</html>

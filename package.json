@@ -1,0 +1,10 @@
+{
+  "name": "joe-website-local-feedback",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local server for website feedback logging",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

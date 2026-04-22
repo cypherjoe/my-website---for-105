@@ -212,17 +212,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Theme Toggle
     const themeToggle = document.querySelector('.theme-toggle');
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    const THEME_KEY = 'theme';
+    const THEME_MODE_KEY = 'themeMode';
 
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    function getTimeBasedTheme() {
+        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+        const now = new Date();
+        const localHour = now.getHours();
+        const isDaylightHours = localHour >= 8 && localHour < 17;
+
+        return {
+            theme: isDaylightHours ? 'light' : 'dark',
+            timeZone
+        };
+    }
+
+    function resolveInitialTheme() {
+        const savedTheme = localStorage.getItem(THEME_KEY);
+        const savedThemeMode = localStorage.getItem(THEME_MODE_KEY);
+        const hasManualTheme = savedThemeMode === 'manual';
+
+        if (hasManualTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
+            return savedTheme;
+        }
+
+        const autoTheme = getTimeBasedTheme();
+        localStorage.setItem(THEME_KEY, autoTheme.theme);
+        localStorage.setItem(THEME_MODE_KEY, 'auto');
+        localStorage.setItem('themeTimeZone', autoTheme.timeZone);
+        localStorage.setItem('themeAutoSetAt', new Date().toISOString());
+        return autoTheme.theme;
+    }
+
+    const initialTheme = resolveInitialTheme();
+    document.documentElement.setAttribute('data-theme', initialTheme);
     if (themeToggle) {
-        themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+        themeToggle.textContent = initialTheme === 'dark' ? '☀️' : '🌙';
         themeToggle.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
             document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+            localStorage.setItem(THEME_KEY, newTheme);
+            localStorage.setItem(THEME_MODE_KEY, 'manual');
             themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
             if (typeof window.refreshThemeToggleTitle === 'function') {
                 window.refreshThemeToggleTitle();
@@ -311,6 +343,109 @@ document.addEventListener('DOMContentLoaded', () => {
     if (yearSpan) {
         yearSpan.textContent = new Date().getFullYear();
     }
+
+    function getFeedbackText(key) {
+        const lang = document.documentElement.getAttribute('data-lang') === 'zh' ? 'zh' : 'en';
+        const copy = {
+            en: {
+                success: 'Thank you. Your message has been received.',
+                error: 'Submission failed. Please try again.',
+                invalid: 'Please complete all fields with valid information.'
+            },
+            zh: {
+                success: '感谢您的留言，我们已收到。',
+                error: '提交失败，请稍后重试。',
+                invalid: '请完整填写所有字段，并使用有效信息。'
+            }
+        };
+        return copy[lang][key] || copy.en[key] || '';
+    }
+
+    function initFeedbackForm() {
+        const feedbackForm = document.getElementById('feedback-form');
+        const feedbackStatus = document.getElementById('feedback-status');
+        if (!feedbackForm || !feedbackStatus) return;
+        const startedAtInput = document.getElementById('feedback-started-at');
+        if (startedAtInput) {
+            startedAtInput.value = new Date().toISOString();
+        }
+
+        feedbackForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            feedbackStatus.classList.remove('is-success', 'is-error');
+            feedbackStatus.textContent = '';
+
+            if (!feedbackForm.checkValidity()) {
+                feedbackStatus.classList.add('is-error');
+                feedbackStatus.textContent = getFeedbackText('invalid');
+                return;
+            }
+
+            const submitBtn = feedbackForm.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+            }
+
+            try {
+                const payload = {
+                    name: feedbackForm.name.value.trim(),
+                    email: feedbackForm.email.value.trim(),
+                    subject: feedbackForm.subject.value.trim(),
+                    message: feedbackForm.message.value.trim(),
+                    website: feedbackForm.website.value.trim(),
+                    clientStartedAt:
+                        startedAtInput && startedAtInput.value
+                            ? startedAtInput.value
+                            : new Date().toISOString(),
+                    page: window.location.pathname,
+                    language: document.documentElement.getAttribute('data-lang') || 'en',
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
+                    clientTimestamp: new Date().toISOString()
+                };
+
+                const response = await fetch('/api/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error('feedback_submit_failed');
+                }
+
+                feedbackForm.reset();
+                if (startedAtInput) {
+                    startedAtInput.value = new Date().toISOString();
+                }
+                feedbackStatus.classList.add('is-success');
+                feedbackStatus.textContent = getFeedbackText('success');
+            } catch (error) {
+                feedbackStatus.classList.add('is-error');
+                feedbackStatus.textContent = getFeedbackText('error');
+            } finally {
+                if (startedAtInput && !startedAtInput.value) {
+                    startedAtInput.value = new Date().toISOString();
+                }
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                }
+            }
+        });
+    }
+
+    window.addEventListener('sitewideLangChange', () => {
+        const feedbackStatus = document.getElementById('feedback-status');
+        if (!feedbackStatus || !feedbackStatus.textContent) return;
+        if (feedbackStatus.classList.contains('is-success')) {
+            feedbackStatus.textContent = getFeedbackText('success');
+            return;
+        }
+        if (feedbackStatus.classList.contains('is-error')) {
+            feedbackStatus.textContent = getFeedbackText('error');
+        }
+    });
+
+    initFeedbackForm();
 
     function initHeroTyping() {
         const heroText = document.querySelector('.typing-text');

@@ -118,7 +118,15 @@
             'alt.ss1': 'Short story — Berkeley',
             'alt.ss2': 'Short story',
             'alt.ss3': 'Short story',
-            'alt.pub1': 'Publication'
+            'alt.pub1': 'Publication',
+            'feedback.nameLabel': 'Your Name',
+            'feedback.emailLabel': 'Email',
+            'feedback.subjectLabel': 'Subject',
+            'feedback.messageLabel': 'Message',
+            'feedback.submit': 'Send Message',
+            'feedback.status.success': 'Thank you. Your message has been received.',
+            'feedback.status.error': 'Submission failed. Please try again.',
+            'feedback.status.invalid': 'Please complete all fields with valid information.'
         },
         zh: {
             'nav.logo': '张知秋',
@@ -234,7 +242,15 @@
             'alt.ss1': '短篇小说 — Berkeley',
             'alt.ss2': '短篇小说',
             'alt.ss3': '短篇小说',
-            'alt.pub1': '发表'
+            'alt.pub1': '发表',
+            'feedback.nameLabel': '您的姓名',
+            'feedback.emailLabel': '邮箱',
+            'feedback.subjectLabel': '主题',
+            'feedback.messageLabel': '留言',
+            'feedback.submit': '发送留言',
+            'feedback.status.success': '感谢您的留言，我们已收到。',
+            'feedback.status.error': '提交失败，请稍后重试。',
+            'feedback.status.invalid': '请完整填写所有字段，并使用有效信息。'
         }
     };
 

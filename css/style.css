@@ -614,6 +614,39 @@ img {
     background: #357abd;
 }
 
+.feedback-status {
+    margin-top: 0.85rem;
+    min-height: 1.5rem;
+    font-size: 0.95rem;
+    text-align: left;
+    opacity: 0.9;
+}
+
+.feedback-status.is-success {
+    color: #168f52;
+}
+
+.feedback-status.is-error {
+    color: #c73939;
+}
+
+[data-theme="dark"] .feedback-status.is-success {
+    color: #67d49a;
+}
+
+[data-theme="dark"] .feedback-status.is-error {
+    color: #ff8f8f;
+}
+
+.feedback-honeypot {
+    position: absolute !important;
+    left: -9999px !important;
+    width: 1px !important;
+    height: 1px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
 /* Footer */
 footer {
     background: var(--bg-secondary);

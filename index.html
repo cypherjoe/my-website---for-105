@@ -102,6 +102,28 @@
             <div style="text-align: center; margin-bottom: 2rem;" class="fade-in">
                 <p style="font-size: 1.2rem;"><span data-i18n="common.emailPrefix">Email: </span><a href="mailto:zhiqiuzhang@link.cuhk.edu.cn" style="color: var(--primary-color);">zhiqiuzhang@link.cuhk.edu.cn</a></p>
             </div>
+            <form id="feedback-form" class="contact-form fade-in" novalidate>
+                <div class="form-group">
+                    <label for="feedback-name" data-i18n="feedback.nameLabel">Your Name</label>
+                    <input id="feedback-name" name="name" type="text" maxlength="120" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedback-email" data-i18n="feedback.emailLabel">Email</label>
+                    <input id="feedback-email" name="email" type="email" maxlength="180" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedback-subject" data-i18n="feedback.subjectLabel">Subject</label>
+                    <input id="feedback-subject" name="subject" type="text" maxlength="180" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedback-message" data-i18n="feedback.messageLabel">Message</label>
+                    <textarea id="feedback-message" name="message" rows="6" maxlength="4000" required></textarea>
+                </div>
+                <input id="feedback-website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" class="feedback-honeypot">
+                <input id="feedback-started-at" name="clientStartedAt" type="hidden">
+                <button type="submit" class="submit-btn" data-i18n="feedback.submit">Send Message</button>
+                <p id="feedback-status" class="feedback-status" aria-live="polite"></p>
+            </form>
         </div>
     </section>
 
