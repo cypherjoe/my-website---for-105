@@ -331,133 +331,144 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function boldNumbersInDescriptions() {
-        const descriptionNodes = document.querySelectorAll(
-            '.text-placeholder p, [data-i18n="index.heroBody"]'
-        );
+        const descriptionNodes = document.querySelectorAll('.text-placeholder p');
         if (descriptionNodes.length === 0) return;
 
+        // ONLY these phrases (EN + CN where the site uses different wording). Disambiguated where bare
+        // words would match the wrong page.
         const highlights = [
+            // Law firms
+            'JS Law',
+            'over 60 clients',
+            'RMB 3 million',
             'Temporary Restraining Order (TRO) alerts',
             'Temporary Restraining Order（TRO）预警',
+            'Freshfields LLP',
+            'seven major IPO',
+            'conducted over 30 onsite',
+            'more than 20 complex',
+            'drafted over 10 U.S.-side',
+            '超过 60 名客户',
+            '人民币 300 万元',
+            '七项大型 IPO',
+            '开展逾 30 场现场',
+            '翻译逾 20 份',
+            '撰写逾 10 章',
+            // Legal clinic
+            '5+ preliminary',
+            '5 份以上初步',
             'four 400-people client groups',
             '4 个各约 400 人的客户群',
+            'five case groups',
+            '5 个案件组律师',
+            'six events',
+            '6 场活动',
+            '200+ participants',
+            '超过 200 人',
+            // LAWASIA
             'two 40-page legal memos',
-            '两份约 40 页的法律备忘录',
             'six 20-minute oral presentations',
+            'fourth place',
+            '第四名',
+            '“Best Endeavor Prize.”',
+            '"Best Endeavor Prize."',
+            'Best Endeavor Prize',
+            '两份约 40 页的法律备忘录',
             '六场约 20 分钟的口头陈述',
+            // Translator
+            '30+ translation works',
+            '5+ simultaneous interpretation',
+            '30 余项笔译工作',
+            '5 余次同声传译需求',
             'CEO of Maidalyu',
             '首席执行官',
+            // English teaching
             '(USTF) at CUHK-Shenzhen',
-            '（USTF）',
-            'Journal of Education, Humanities and Social Sciences',
-            'Berkeley Fiction Review',
-            'Summer Research Assistant',
-            '暑期研究助理岗位',
-            'First Amendment',
-            'Environmental Law',
-            'Sports Law',
-            'Media Law',
-            'Freshfields LLP',
-            'Stepping Stone China',
-            'Financial Statements',
-            '财务报表',
-            'Best Endeavor Prize',
-            'First Prize',
-            '一等奖',
-            'Peer Med',
-            'JS Law',
-            'RMB 3 million',
-            '人民币 300 万元',
-            '5000-word',
-            '5000 词英文方案书',
-            '5-minute',
-            '5 分钟创意介绍视频',
-            '2-minute',
-            '2 分钟精炼路演视频',
+            '作为港中深本科生教学助理（USTF）',
+            '3 hours',
+            '3 小时',
+            'one-on-one',
+            '一对一',
+            'Stepping Stones China',
+            '22 fifth-grade',
+            '22 名五年级',
+            // Public speaking
+            '60 hours of speech',
+            '超过 60 小时演讲',
+            '30+ weekly sessions',
+            '30 余周的常规训练',
+            '7 provincial medals',
+            '7 枚省级奖牌',
+            '3 national medals',
+            '3 枚国家级奖牌',
+            // Peer mentoring
             '6 freshmen',
             '6 名新生',
+            'e.g.,',
+            '训练（如',
+            '活动（如',
             '200-person workshop',
             '约 200 人参与',
             '20+ events',
             '20 余场活动',
-            '200+ participants',
-            '超过 200 人',
-            '30+ translation works',
-            '30 余项笔译工作',
-            '5+ simultaneous interpretation',
-            '5 余次同声传译需求',
-            'the very first',
-            '首个',
+            'Peer Med',
+            // Law society (avoid “one of”, “two English”, “five Environmental”, etc.)
+            'two professional school application talks',
+            'one "mock case" workshop',
+            'one career talk',
             '200+ members',
             '200+ 名成员',
-            '30+',
-            '5+',
-            '60',
-            '超过 60 小时',
-            'seven',
-            '30',
-            '30 余周',
-            '20',
-            '10',
-            '逾 10 章',
-            '22',
-            '22 名',
-            '7',
-            '7 枚省级奖牌',
-            '3',
-            '3 枚国家级奖牌',
-            'two',
-            '两场',
-            'one',
-            '一场',
-            'five',
-            '5 个案件组律师',
-            'six events',
-            '6 场活动',
-            'fourth place',
-            '第四名',
-            'one-on-one',
-            '一对一',
-            '3 hours',
-            '3 小时',
+            '两场法学院申请分享会',
+            '一场“模拟案件”工作坊',
+            '一场由大湾区律师参与的职业发展分享会',
+            // UNC Exchange
+            'Media Law',
+            'First Amendment',
+            'Environmental Law',
+            'Sports Law',
+            'Summer Research Assistant',
+            '暑期研究助理岗位',
+            // Algae Shield / GSC
+            '“Algae Shield”',
+            '"Algae Shield"',
+            '5000-word',
+            '5000 词英文方案书',
+            'Financial Statements',
+            '英文财务报表',
+            '5-minute Phase One',
+            '5 分钟创意介绍视频',
+            '2-minute concise',
+            '2 分钟精炼路演视频',
+            'First Prize',
+            '一等奖',
             '2027',
             '2030',
-            'Algae Shield'
+            // Short stories & publications
+            'Berkeley Fiction Review',
+            'Journal of Education, Humanities and Social Sciences'
         ];
-        const underlineHighlights = [
-            'RMB 829,346.84',
-            '人民币 829,346.84 元',
-            'U.S.-side prospectus chapters',
-            '美国侧招股书内容',
-            'Temporary Restraining Order (TRO) alerts',
-            'Temporary Restraining Order（TRO）预警',
-            'e.g.,'
-        ];
+
         const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         function buildStrictPattern(phrase) {
             const escaped = escapeRegex(phrase);
-            const startsWord = /[A-Za-z0-9]/.test(phrase.charAt(0));
-            const endsWord = /[A-Za-z0-9]/.test(phrase.charAt(phrase.length - 1));
-            const leftGuard = startsWord ? '(?<![A-Za-z0-9])' : '';
-            const rightGuard = endsWord ? '(?![A-Za-z0-9])' : '';
+            const startsAsciiWord = /^[A-Za-z0-9]/.test(phrase);
+            const endsAsciiWord = /[A-Za-z0-9]$/.test(phrase);
+            const leftGuard = startsAsciiWord ? '(?<![A-Za-z0-9])' : '';
+            const rightGuard = endsAsciiWord ? '(?![A-Za-z0-9])' : '';
             return new RegExp(`${leftGuard}${escaped}${rightGuard}`, 'gi');
         }
+
         const highlightPatterns = highlights
-            .slice()
-            .sort((a, b) => b.length - a.length)
-            .map((phrase) => buildStrictPattern(phrase));
-        const underlinePatterns = underlineHighlights
             .slice()
             .sort((a, b) => b.length - a.length)
             .map((phrase) => buildStrictPattern(phrase));
 
         descriptionNodes.forEach((node) => {
+            // Preserve existing inline links inserted via i18n/static HTML.
+            if (node.querySelector('a')) return;
             const sourceText = node.textContent;
             if (!sourceText) return;
             let formattedText = sourceText;
-            underlinePatterns.forEach((pattern) => {
-                formattedText = formattedText.replace(pattern, '<strong><u>$&</u></strong>');
-            });
             highlightPatterns.forEach((pattern) => {
                 formattedText = formattedText.replace(pattern, '<strong>$&</strong>');
             });
