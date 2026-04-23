@@ -308,12 +308,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (navbar) {
             navbar.style.padding = window.scrollY > 100 ? '0.5rem 0' : '1rem 0';
         }
-        if (scrollTopBtn) {
-            scrollTopBtn.classList.toggle('visible', window.scrollY > 100);
-        }
     });
 
     if (scrollTopBtn) {
+        scrollTopBtn.classList.add('visible');
         scrollTopBtn.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
@@ -327,6 +325,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
+            if (entry.target.classList.contains('section-title')) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    if (
+                        entry.target._playHeadingEffect &&
+                        entry.target.dataset.headingAnimatedInView !== 'true'
+                    ) {
+                        entry.target._playHeadingEffect();
+                        entry.target.dataset.headingAnimatedInView = 'true';
+                    }
+                } else {
+                    entry.target.classList.remove('visible');
+                    delete entry.target.dataset.headingAnimatedInView;
+                }
+                return;
+            }
+
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
                 observer.unobserve(entry.target); // Only animate once
@@ -334,7 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    document.querySelectorAll('.fade-in').forEach((el) => {
+    document.querySelectorAll('.fade-in, .section-title').forEach((el) => {
         observer.observe(el);
     });
 
@@ -350,12 +365,12 @@ document.addEventListener('DOMContentLoaded', () => {
             en: {
                 success: 'Thank you. Your message has been received.',
                 error: 'Submission failed. Please try again.',
-                invalid: 'Please complete all fields with valid information.'
+                invalid: 'Please complete all required fields.'
             },
             zh: {
                 success: '感谢您的留言，我们已收到。',
                 error: '提交失败，请稍后重试。',
-                invalid: '请完整填写所有字段，并使用有效信息。'
+                invalid: '请完整填写所有必填字段。'
             }
         };
         return copy[lang][key] || copy.en[key] || '';
@@ -419,9 +434,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         body: JSON.stringify({
                             access_key: staticKey,
                             name: payload.name,
-                            email: payload.email,
+                            // Web3Forms enforces email format on this field.
+                            // Keep it valid while preserving user-entered contact info below.
+                            email: 'contact@placeholder.com',
                             subject: payload.subject,
-                            message: payload.message,
+                            message: `Contact Information: ${payload.email}\n\n${payload.message}`,
+                            contact_info: payload.email,
                             from_name: payload.name,
                             page: window.location.href
                         })
@@ -478,19 +496,67 @@ document.addEventListener('DOMContentLoaded', () => {
     function initHeroTyping() {
         const heroText = document.querySelector('.typing-text');
         if (!heroText) return;
-        const text = heroText.textContent;
-        heroText.textContent = '';
-        let i = 0;
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        function typeWriter() {
-            if (i < text.length) {
-                heroText.textContent += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, 100);
-            }
+        if (heroText._typingTimer) {
+            clearInterval(heroText._typingTimer);
+            heroText._typingTimer = null;
+        }
+        if (heroText._heroObserver) {
+            heroText._heroObserver.disconnect();
+            heroText._heroObserver = null;
         }
 
-        setTimeout(typeWriter, 500);
+        const text = heroText.textContent.trim();
+        if (!text) return;
+        heroText._fullHeroText = text;
+
+        function playHeroTyping() {
+            if (heroText._typingTimer) {
+                clearInterval(heroText._typingTimer);
+                heroText._typingTimer = null;
+            }
+
+            if (prefersReducedMotion) {
+                heroText.textContent = heroText._fullHeroText;
+                return;
+            }
+
+            heroText.textContent = '';
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < heroText._fullHeroText.length) {
+                    heroText.textContent += heroText._fullHeroText.charAt(i);
+                    i += 1;
+                    return;
+                }
+                clearInterval(timer);
+                heroText._typingTimer = null;
+            }, 90);
+            heroText._typingTimer = timer;
+        }
+
+        heroText.textContent = heroText._fullHeroText;
+        heroText._playHeadingEffect = playHeroTyping;
+        delete heroText.dataset.headingAnimatedInView;
+
+        const heroObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        if (heroText.dataset.headingAnimatedInView !== 'true') {
+                            playHeroTyping();
+                            heroText.dataset.headingAnimatedInView = 'true';
+                        }
+                    } else {
+                        delete heroText.dataset.headingAnimatedInView;
+                    }
+                });
+            },
+            { threshold: 0.35 }
+        );
+        heroObserver.observe(heroText);
+        heroText._heroObserver = heroObserver;
     }
 
     function initSectionTitleEffects() {
@@ -499,26 +565,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        sectionTitles.forEach((title, index) => {
-            if (!title) return;
-
-            // Stop any in-flight typing before restarting (e.g., language switch).
+        function applyTitleTyping(title) {
+            const fullText = title._fullTitleText || title.textContent.trim();
+            if (!fullText) return;
             if (title._typingTimer) {
                 clearInterval(title._typingTimer);
                 title._typingTimer = null;
             }
-
-            const fullText = title.textContent.trim();
-            if (!fullText) return;
-
-            title.classList.add('fancy-title');
-
-            if (prefersReducedMotion) {
-                title.textContent = fullText;
-                title.classList.remove('is-typing');
-                return;
-            }
-
             title.textContent = '';
             title.classList.add('is-typing');
 
@@ -536,6 +589,35 @@ document.addEventListener('DOMContentLoaded', () => {
             }, speedMs);
 
             title._typingTimer = timer;
+        }
+
+        sectionTitles.forEach((title) => {
+            if (!title) return;
+
+            // Stop any in-flight typing before restarting (e.g., language switch).
+            if (title._typingTimer) {
+                clearInterval(title._typingTimer);
+                title._typingTimer = null;
+            }
+            const fullText = title.textContent.trim();
+            if (!fullText) return;
+            title._fullTitleText = fullText;
+            delete title.dataset.headingAnimatedInView;
+
+            title.classList.add('fancy-title');
+            title._playHeadingEffect = function () {
+                if (prefersReducedMotion) {
+                    title.textContent = title._fullTitleText;
+                    title.classList.remove('is-typing');
+                    return;
+                }
+                applyTitleTyping(title);
+            };
+
+            if (!title.classList.contains('fade-in')) {
+                title._playHeadingEffect();
+                title.dataset.headingAnimatedInView = 'true';
+            }
         });
     }
 

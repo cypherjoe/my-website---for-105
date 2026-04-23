@@ -31,7 +31,7 @@
             'common.backHome': 'Back to Home',
             'common.getInTouch': 'Get In Touch',
             'common.downloadResume': 'Download Resume',
-            'common.emailPrefix': 'Email: ',
+            'common.emailPrefix': 'Contact Information: ',
             'theme.titleLight': 'Switch to Dark Mode',
             'theme.titleDark': 'Switch to Light Mode',
             'lang.ariaToZh': 'Switch to Chinese',
@@ -53,7 +53,7 @@
             'meta.publications': 'Publications | Zhiqiu (Joe) ZHANG',
             'meta.videos': 'Videos | Zhiqiu (Joe) ZHANG',
             'index.heroHeading': 'About',
-            'index.heroBody': 'Zhiqiu (Joe) Zhang is pursuing a BA in Legal Communication at The Chinese University of Hong Kong, Shenzhen. Before formal legal training, he independently handled an insurance contract dispute on behalf of a close family member against a big company called Sino Life Insurance Co., Ltd. represented by a big law firm called Dentons LLP. He managed client interviews, evidence collection, pleadings, court appearances, and negotiations. The case concluded with Joe winning big: Joe\'s client got full recovery of RMB 829,346.84. Joe aims to apply to law school in a common law jurisdiction, and act as a bridge between China and the world.',
+            'index.heroBody': 'Zhiqiu (Joe) Zhang is pursuing a BA in Legal Communication at The Chinese University of Hong Kong, Shenzhen. Before formal legal training, he independently handled an insurance contract dispute on behalf of a close family member against a big company called Sino Life Insurance Co., Ltd. represented by a big law firm called Dentons LLP. He managed client interviews, evidence collection, pleadings, court appearances, and negotiations. The case concluded with Joe winning big: his client got full recovery of RMB 829,346.84. Joe aims to apply to a law school in a common law jurisdiction, and act as a bridge between China and the world.',
             'index.quotesHeading': 'Favorite Quotes',
             'index.quote1.text': '"Prosperous lawyers, prosperous nation."',
             'index.quote1.author': '-- Prof. Jiang Ping',
@@ -120,13 +120,13 @@
             'alt.ss3': 'Short story',
             'alt.pub1': 'Publication',
             'feedback.nameLabel': 'Your Name',
-            'feedback.emailLabel': 'Email',
+            'feedback.emailLabel': 'Contact Information',
             'feedback.subjectLabel': 'Subject',
             'feedback.messageLabel': 'Message',
             'feedback.submit': 'Send Message',
             'feedback.status.success': 'Thank you. Your message has been received.',
             'feedback.status.error': 'Submission failed. Please try again.',
-            'feedback.status.invalid': 'Please complete all fields with valid information.'
+            'feedback.status.invalid': 'Please complete all required fields.'
         },
         zh: {
             'nav.logo': '张知秋',
@@ -155,7 +155,7 @@
             'common.backHome': '返回首页',
             'common.getInTouch': '联系我',
             'common.downloadResume': '下载简历',
-            'common.emailPrefix': '邮箱：',
+            'common.emailPrefix': '联系方式：',
             'theme.titleLight': '切换深色模式',
             'theme.titleDark': '切换浅色模式',
             'lang.ariaToZh': '切换到中文',
@@ -177,7 +177,7 @@
             'meta.publications': '发表 | 张知秋',
             'meta.videos': '视频 | 张知秋',
             'index.heroHeading': '关于',
-            'index.heroBody': '张知秋就读于香港中文大学（深圳）英语法律学士学位项目。在正式接受法律训练之前，他曾独立代理一位近亲属与一家名为 Sino Life Insurance Co., Ltd. 的大型保险公司之间的保险合同纠纷（该公司由大型律所 Dentons LLP 代理），负责客户访谈、证据收集、诉状、出庭与谈判。案件结果是张知秋大获全胜：张知秋的当事人全额追回人民币 829,346.84 元。张知秋希望申请普通法法域的法学院，并在中国与世界之间担任桥梁。',
+            'index.heroBody': '张知秋就读于香港中文大学（深圳）英语法律学士学位项目。在正式接受法律训练之前，他曾独立代理一位近亲属与一家名为 Sino Life Insurance Co., Ltd. 的大型保险公司之间的保险合同纠纷（该公司由大型律所 Dentons LLP 代理），负责客户访谈、证据收集、诉状、出庭与谈判。案件结果是张知秋大获全胜：他的当事人全额追回人民币 829,346.84 元。张知秋希望申请普通法法域的一所法学院，并在中国与世界之间担任桥梁。',
             'index.quotesHeading': '我最喜欢的两句话',
             'index.quote1.text': '“律师兴则国家兴”',
             'index.quote1.author': '-- 江平教授',
@@ -244,13 +244,13 @@
             'alt.ss3': '短篇小说',
             'alt.pub1': '发表',
             'feedback.nameLabel': '您的姓名',
-            'feedback.emailLabel': '邮箱',
+            'feedback.emailLabel': '联系方式',
             'feedback.subjectLabel': '主题',
             'feedback.messageLabel': '留言',
             'feedback.submit': '发送留言',
             'feedback.status.success': '感谢您的留言，我们已收到。',
             'feedback.status.error': '提交失败，请稍后重试。',
-            'feedback.status.invalid': '请完整填写所有字段，并使用有效信息。'
+            'feedback.status.invalid': '请完整填写所有必填字段。'
         }
     };
 
