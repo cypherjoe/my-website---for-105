@@ -1,6 +1,8 @@
 (function () {
     'use strict';
 
+    const TOKEN_STORAGE_KEY = 'feedbackAdminToken';
+
     const searchInput = document.getElementById('admin-search');
     const langFilter = document.getElementById('admin-lang-filter');
     const tokenInput = document.getElementById('admin-token');
@@ -120,6 +122,24 @@
     }
     if (refreshBtn) {
         refreshBtn.addEventListener('click', loadRecords);
+    }
+
+    if (tokenInput) {
+        try {
+            const saved = sessionStorage.getItem(TOKEN_STORAGE_KEY);
+            if (saved) {
+                tokenInput.value = saved;
+            }
+        } catch (error) {
+            /* ignore */
+        }
+        tokenInput.addEventListener('input', () => {
+            try {
+                sessionStorage.setItem(TOKEN_STORAGE_KEY, tokenInput.value.trim());
+            } catch (error) {
+                /* ignore */
+            }
+        });
     }
 
     loadRecords();

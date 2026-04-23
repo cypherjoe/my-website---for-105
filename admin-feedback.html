@@ -102,6 +102,12 @@
         <div class="admin-wrap">
             <h1 class="section-title" style="margin-bottom: 1rem;">Feedback Admin Dashboard</h1>
 
+            <div class="admin-card" style="margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.55;">
+                <p style="margin: 0 0 0.5rem"><strong>Read messages here</strong> after starting <code>node server.js</code> and opening this page from the same site (e.g. <code>http://localhost:3000/admin-feedback.html</code>).</p>
+                <p style="margin: 0 0 0.5rem">Set <code>ADMIN_TOKEN</code> in a <code>.env</code> file (see <code>env.example</code>), paste that token below, then click Refresh.</p>
+                <p style="margin: 0"><strong>Push notifications:</strong> add <code>DISCORD_WEBHOOK_URL</code> and/or <code>SLACK_WEBHOOK_URL</code> to <code>.env</code>, or use Resend (<code>RESEND_API_KEY</code>, <code>FEEDBACK_NOTIFY_EMAIL</code>, <code>RESEND_FROM</code>). Restart the server after editing <code>.env</code>.</p>
+            </div>
+
             <div class="admin-card">
                 <div class="admin-controls">
                     <input id="admin-search" type="text" placeholder="Search name/email/subject/message">
@@ -110,7 +116,7 @@
                         <option value="en">English</option>
                         <option value="zh">Chinese</option>
                     </select>
-                    <input id="admin-token" type="password" placeholder="Admin token (optional)">
+                    <input id="admin-token" type="password" placeholder="ADMIN_TOKEN from .env" autocomplete="off">
                     <button id="admin-refresh" type="button">Refresh</button>
                 </div>
                 <div class="admin-meta">
@@ -139,6 +145,6 @@
             </div>
         </div>
     </section>
-    <script src="js/admin-feedback.js"></script>
+    <script src="js/admin-feedback.js?v=2"></script>
 </body>
 </html>

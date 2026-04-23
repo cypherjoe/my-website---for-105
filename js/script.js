@@ -387,12 +387,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
+                // Use FormData: feedbackForm.name is the form's own "name" attribute (string),
+                // not the <input name="name"> — accessing .value on it throws and shows as submit failure.
+                const fd = new FormData(feedbackForm);
+                const field = (key) => String(fd.get(key) ?? '').trim();
                 const payload = {
-                    name: feedbackForm.name.value.trim(),
-                    email: feedbackForm.email.value.trim(),
-                    subject: feedbackForm.subject.value.trim(),
-                    message: feedbackForm.message.value.trim(),
-                    website: feedbackForm.website.value.trim(),
+                    name: field('name'),
+                    email: field('email'),
+                    subject: field('subject'),
+                    message: field('message'),
+                    website: field('website'),
                     clientStartedAt:
                         startedAtInput && startedAtInput.value
                             ? startedAtInput.value
@@ -403,14 +407,38 @@ document.addEventListener('DOMContentLoaded', () => {
                     clientTimestamp: new Date().toISOString()
                 };
 
-                const response = await fetch('/api/feedback', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error('feedback_submit_failed');
+                const staticKey = (window.__FEEDBACK_CONFIG && window.__FEEDBACK_CONFIG.web3formsAccessKey || '').trim();
+                let response;
+                if (staticKey) {
+                    if (payload.website) {
+                        throw new Error('feedback_submit_failed');
+                    }
+                    response = await fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            access_key: staticKey,
+                            name: payload.name,
+                            email: payload.email,
+                            subject: payload.subject,
+                            message: payload.message,
+                            from_name: payload.name,
+                            page: window.location.href
+                        })
+                    });
+                    const data = await response.json().catch(() => ({}));
+                    if (!response.ok || !data.success) {
+                        throw new Error((data && data.message) || 'feedback_submit_failed');
+                    }
+                } else {
+                    response = await fetch('/api/feedback', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) {
+                        throw new Error('feedback_submit_failed');
+                    }
                 }
 
                 feedbackForm.reset();
